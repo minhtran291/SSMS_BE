@@ -43,6 +43,8 @@ namespace SSMS.API
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+
             app.UseAuthentication();
             app.UseAuthorization();
 

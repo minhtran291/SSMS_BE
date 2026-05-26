@@ -12,7 +12,7 @@ namespace SSMS.API.Controllers
         private readonly IProductService _productService = productService;
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductDTO>>> GetAllProducts(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetAllProducts(CancellationToken cancellationToken)
         {
             var products = await _productService.GetAllProducts(cancellationToken);
             return Ok(products);

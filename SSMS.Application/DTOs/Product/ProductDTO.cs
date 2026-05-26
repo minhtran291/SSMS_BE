@@ -19,7 +19,7 @@ namespace SSMS.Application.DTOs.Product
 
     public class ImageDTO
     {
-        public string Image { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
     }
 
     public class SizePriceDTO
