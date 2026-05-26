@@ -19,24 +19,22 @@ namespace SSMS.Persistence.UnitOfWork
 
         public async Task BeginTransactionAsync()
         {
-            if (_transaction == null)
-            {
-                _transaction = await _context.Database.BeginTransactionAsync();
-            }
+            _transaction ??= await _context.Database.BeginTransactionAsync();
         }
 
         public async Task CommitTransactionAsync()
         {
             if (_transaction != null)
             {
+                var transaction = _transaction;
+                _transaction = null;
                 try
                 {
-                    await _transaction.CommitAsync();
+                    await transaction.CommitAsync();
                 }
                 finally
                 {
-                    await _transaction.DisposeAsync();
-                    _transaction = null;
+                    await transaction.DisposeAsync();
                 }
             }
         }
@@ -45,9 +43,18 @@ namespace SSMS.Persistence.UnitOfWork
         {
             if (_transaction != null)
             {
-                await _transaction.RollbackAsync();
-                await _transaction.DisposeAsync();
+                var transaction = _transaction;
                 _transaction = null;
+
+                try
+                {
+                    await transaction.RollbackAsync();
+
+                }
+                finally
+                {
+                    await transaction.DisposeAsync();
+                }
             }
         }
     }
