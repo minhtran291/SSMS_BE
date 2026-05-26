@@ -9,7 +9,7 @@
         {
             get => _price;
             set => _price = value < 0 
-                ? throw new ArgumentOutOfRangeException(nameof(Price)) 
+                ? throw new ArgumentOutOfRangeException(nameof(Price), value, "Price cannot be negative.") 
                 : value;
         }
 
