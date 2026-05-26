@@ -142,21 +142,21 @@ namespace SSMS.Domain.Constant
 
         public static readonly ProductImageSeedModel[] ProductImageSeeds =
         [
-            new (){ Product = AdidasSneakers, Image = "SA1"},
-            new (){ Product = AdidasSneakers, Image = "SA2"},
-            new (){ Product = AdidasSneakers, Image = "SA3"},
+            new (){ Product = AdidasSneakers, Image = "sneakers/adidas/adidas-sneakers-1.png"},
+            new (){ Product = AdidasSneakers, Image = "sneakers/adidas/adidas-sneakers-2.png"},
+            new (){ Product = AdidasSneakers, Image = "sneakers/adidas/adidas-sneakers-3.png"},
 
-            new (){ Product = NikeSneakers, Image = "SN1"},
-            new (){ Product = NikeSneakers, Image = "SN2"},
-            new (){ Product = NikeSneakers, Image = "SN3"},
+            new (){ Product = NikeSneakers, Image = "sneakers/nike/nike-sneakers-1.png"},
+            new (){ Product = NikeSneakers, Image = "sneakers/nike/nike-sneakers-2.png"},
+            new (){ Product = NikeSneakers, Image = "sneakers/nike/nike-sneakers-3.png"},
 
-            new (){ Product = AdidasRunningShoes, Image = "RSA1"},
-            new (){ Product = AdidasRunningShoes, Image = "RSA2"},
-            new (){ Product = AdidasRunningShoes, Image = "RSA3"},
-
-            new (){ Product = NikeRunningShoes, Image = "RSN1"},
-            new (){ Product = NikeRunningShoes, Image = "RSN2"},
-            new (){ Product = NikeRunningShoes, Image = "RSN3"},
+            new (){ Product = AdidasRunningShoes, Image = "running-shoes/adidas/adidas-running-shoes-1.png"},
+            new (){ Product = AdidasRunningShoes, Image = "running-shoes/adidas/adidas-running-shoes-2.png"},
+            new (){ Product = AdidasRunningShoes, Image = "running-shoes/adidas/adidas-running-shoes-3.png"},
+            
+            new (){ Product = NikeRunningShoes, Image = "running-shoes/nike/nike-running-shoes-1.png"},
+            new (){ Product = NikeRunningShoes, Image = "running-shoes/nike/nike-running-shoes-2.png"},
+            new (){ Product = NikeRunningShoes, Image = "running-shoes/nike/nike-running-shoes-3.png"},
         ];
 
         public static readonly UserSeedModel customer = new ()

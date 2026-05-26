@@ -19,4 +19,8 @@
     <ProjectReference Include="..\SSMS.Application\SSMS.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\products\" />
+  </ItemGroup>
+
 </Project>

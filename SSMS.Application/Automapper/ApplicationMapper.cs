@@ -7,7 +7,8 @@ namespace SSMS.Application.Automapper
     {
         public ApplicationMapper()
         {
-            CreateMap<ProductImage, ImageDTO>();
+            CreateMap<ProductImage, ImageDTO>()
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => $"/images/products/{src.Image}"));
 
             CreateMap<ProductSizePrice, SizePriceDTO>()
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size.Value));
