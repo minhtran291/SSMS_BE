@@ -4,7 +4,7 @@ using SSMS.Persistence.Repositories.Product;
 
 namespace SSMS.Persistence.UnitOfWork
 {
-    public class UnitOfWork(SSMSContext context, 
+    public class UnitOfWork(SSMSContext context,
         IProductRepository product) : IUnitOfWork
     {
         private readonly SSMSContext _context = context;
@@ -29,9 +29,15 @@ namespace SSMS.Persistence.UnitOfWork
         {
             if (_transaction != null)
             {
-                await _transaction.CommitAsync();
-                await _transaction.DisposeAsync();
-                _transaction = null;
+                try
+                {
+                    await _transaction.CommitAsync();
+                }
+                finally
+                {
+                    await _transaction.DisposeAsync();
+                    _transaction = null;
+                }
             }
         }
 
