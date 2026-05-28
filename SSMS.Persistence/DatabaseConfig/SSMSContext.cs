@@ -132,10 +132,6 @@ namespace SSMS.Persistence.DatabaseConfig
                     .HasMaxLength(512)
                     .IsRequired(false);
 
-                //e.Property(e => e.Price)
-                //    .HasPrecision(18, 2)
-                //    .IsRequired();
-
                 e.HasOne(p => p.Category)
                     .WithMany(c => c.Products)
                     .HasForeignKey(p => p.CategoryId)
@@ -206,7 +202,13 @@ namespace SSMS.Persistence.DatabaseConfig
                     .HasMaxLength(512)
                     .IsRequired();
 
+                e.Property(e => e.DisplayOrder)
+                    .IsRequired();
+
                 e.HasIndex(e => new {e.ProductId, e.Image})
+                    .IsUnique();
+
+                e.HasIndex(e => new { e.ProductId, e.DisplayOrder })
                     .IsUnique();
 
                 e.HasOne(pi => pi.Product)
