@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SSMS.Application.DTOs.Product;
 using SSMS.Application.Services.Base;
@@ -16,18 +15,29 @@ namespace SSMS.Application.Services.Product
             return await _unitOfWork.Product
                 .Query()
                 .AsNoTracking()
+                .Select(p => new
+                {
+                    Product = p,
+                    Cheapest = p.ProductSizePrices
+                        .OrderBy(psp => psp.Price)
+                        .FirstOrDefault()
+                })
                 .Select(p => new ProductListDTO
                 {
-                    Id = p.Id,
-                    ProductName = p.ProductName,
-                    CategoryName = p.Category.CategoryName,
-                    BrandName = p.Brand.BrandName,
-                    Thumbnail = p.ProductImages
+                    Id = p.Product.Id,
+                    ProductName = p.Product.ProductName,
+                    CategoryName = p.Product.Category.CategoryName,
+                    BrandName = p.Product.Brand.BrandName,
+                    Thumbnail = p.Product.ProductImages
                         .OrderBy(pi => pi.DisplayOrder)
-                        .Select(pi => pi.Image)
+                        .Select(pi => "/images/products/" + pi.Image)
                         .FirstOrDefault() ?? string.Empty,
-                    Price = p.ProductSizePrices
-                        .Min(psp => psp.Price)
+                    Price = p.Cheapest != null
+                        ? p.Cheapest.Price
+                        : 0,
+                    Size = p.Cheapest != null
+                        ? p.Cheapest.Size.Value
+                        : 0,
                 })
                 .ToListAsync(cancellationToken);
         }

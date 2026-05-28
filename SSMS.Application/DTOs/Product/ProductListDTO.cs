@@ -14,5 +14,6 @@ namespace SSMS.Application.DTOs.Product
         public string BrandName { get; set; } = string.Empty;
         public string Thumbnail { get; set; } = string.Empty;
         public decimal Price { get; set; }
-}
+        public int Size { get; set; }
+    }
 }
