@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SSMS.Persistence.DatabaseConfig;
 
@@ -11,9 +12,11 @@ using SSMS.Persistence.DatabaseConfig;
 namespace SSMS.Persistence.Migrations
 {
     [DbContext(typeof(SSMSContext))]
-    partial class SSMSContextModelSnapshot : ModelSnapshot
+    [Migration("20260528023909_Modify_DisplayOrder_NotNull")]
+    partial class Modify_DisplayOrder_NotNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

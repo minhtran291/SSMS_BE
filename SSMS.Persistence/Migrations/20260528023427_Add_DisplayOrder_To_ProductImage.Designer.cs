@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SSMS.Persistence.DatabaseConfig;
 
@@ -11,9 +12,11 @@ using SSMS.Persistence.DatabaseConfig;
 namespace SSMS.Persistence.Migrations
 {
     [DbContext(typeof(SSMSContext))]
-    partial class SSMSContextModelSnapshot : ModelSnapshot
+    [Migration("20260528023427_Add_DisplayOrder_To_ProductImage")]
+    partial class Add_DisplayOrder_To_ProductImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,7 +268,7 @@ namespace SSMS.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DisplayOrder")
+                    b.Property<int?>("DisplayOrder")
                         .HasColumnType("int");
 
                     b.Property<string>("Image")
@@ -277,9 +280,6 @@ namespace SSMS.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId", "DisplayOrder")
-                        .IsUnique();
 
                     b.HasIndex("ProductId", "Image")
                         .IsUnique();
