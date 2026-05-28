@@ -17,5 +17,15 @@ namespace SSMS.API.Controllers
             var products = await _productService.GetAllProducts(cancellationToken);
             return Ok(products);
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProductDetailDTO>> GetProductById(int id, CancellationToken cancellationToken)
+        {
+            var product = await _productService.GetProductById(id, cancellationToken);
+            if (product is null)
+                return NotFound();
+
+            return Ok(product);
+        }
     }
 }

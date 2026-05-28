@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SSMS.Application.DTOs.Product;
 using SSMS.Application.Services.Base;
@@ -46,5 +47,15 @@ namespace SSMS.Application.Services.Product
         Chat bao cai gi ma ko can include dung select thi
         ef core tu translate JOIN
         */
+
+        public async Task<ProductDetailDTO?> GetProductById(int id, CancellationToken cancellationToken = default)
+        {
+            return await _unitOfWork.Product
+                .Query()
+                .AsNoTracking()
+                .Where(p => p.Id == id)
+                .ProjectTo<ProductDetailDTO>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }
