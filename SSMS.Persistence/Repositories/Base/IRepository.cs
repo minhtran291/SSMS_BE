@@ -12,7 +12,7 @@ public interface IRepository<T> where T : class
     void UpdateRange(IEnumerable<T> entities);
     void Remove(T entity);
     void RemoveRange(IEnumerable<T> entities);
-    IQueryable<T> Query(bool tracking = false);
+    IQueryable<T> Query();
     Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
     Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
 }

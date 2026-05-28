@@ -15,14 +15,14 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet = _context.Set<T>();
     }
 
-    public IQueryable<T> Query(bool tracking = false)
+    public IQueryable<T> Query()
     {
-        return tracking ? _dbSet : _dbSet.AsNoTracking();
+        return _dbSet;
     }
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _dbSet.AsNoTracking().ToListAsync();
+        return await _dbSet.ToListAsync();
     }
 
     public async Task<T?> GetByIdAsync(object id)

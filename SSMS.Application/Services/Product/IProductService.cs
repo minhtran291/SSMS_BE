@@ -4,6 +4,6 @@ namespace SSMS.Application.Services.Product
 {
     public interface IProductService
     {
-        Task<IReadOnlyList<ProductDTO>> GetAllProducts(CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<ProductListDTO>> GetAllProducts(CancellationToken cancellationToken = default);
     }
 }
