@@ -13,7 +13,7 @@ namespace SSMS.Application.Automapper
             CreateMap<ProductSizePrice, SizePriceDTO>()
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size.Value));
 
-            CreateMap<Product, ProductDTO>()
+            CreateMap<Product, ProductDetailDTO>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.BrandName));
                 //.ForMember(dest => dest.ProductImages, opt => opt.MapFrom(src => src.ProductImages))
