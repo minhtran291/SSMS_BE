@@ -2,6 +2,24 @@
 {
     public class CreateProductDTO
     {
+        public string ProductName { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public int CategoryId { get; set; }
+        public int BrandId { get; set; }
+        public List<CreateProductSizePriceDTO> SizePrices { get; set; } = [];
+        public List<CreateProductImageDTO> Images { get; set; } = [];
+    }
 
+
+    public class CreateProductSizePriceDTO
+    {
+        public int SizeId { get; set; }
+        public decimal Price { get; set; }
+    }
+
+    public class CreateProductImageDTO
+    {
+        public string Image { get; set; } = string.Empty;
+        public int DisplayOrder { get; set; }
     }
 }
