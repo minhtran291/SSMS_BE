@@ -27,5 +27,12 @@ namespace SSMS.API.Controllers
 
             return Ok(product);
         }
+
+        [HttpGet("form-data")]
+        public async Task<ActionResult<ProductFormDataDTO>> GetProductFormData(CancellationToken cancellationToken)
+        {
+            var data = await _productService.GetProductFormDataAsync(cancellationToken);
+            return Ok(data);
+        }
     }
 }
