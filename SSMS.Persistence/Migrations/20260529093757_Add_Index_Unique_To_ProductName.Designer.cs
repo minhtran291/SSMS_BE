@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SSMS.Persistence.DatabaseConfig;
 
@@ -11,9 +12,11 @@ using SSMS.Persistence.DatabaseConfig;
 namespace SSMS.Persistence.Migrations
 {
     [DbContext(typeof(SSMSContext))]
-    partial class SSMSContextModelSnapshot : ModelSnapshot
+    [Migration("20260529093757_Add_Index_Unique_To_ProductName")]
+    partial class Add_Index_Unique_To_ProductName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -132,6 +132,9 @@ namespace SSMS.Persistence.DatabaseConfig
                     .HasMaxLength(512)
                     .IsRequired(false);
 
+                e.HasIndex(e => e.ProductName)
+                    .IsUnique();
+
                 e.HasOne(p => p.Category)
                     .WithMany(c => c.Products)
                     .HasForeignKey(p => p.CategoryId)
