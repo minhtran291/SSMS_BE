@@ -8,6 +8,9 @@ using SSMS.Domain.ConfigOptions;
 using SSMS.Domain.Entities;
 using SSMS.Persistence.UnitOfWork;
 using SSMS.Persistence.Repositories.Product;
+using SSMS.Persistence.Repositories.Category;
+using SSMS.Persistence.Repositories.Brand;
+using SSMS.Persistence.Repositories.Size;
 
 namespace SSMS.Persistence.DatabaseConfig
 {
@@ -73,6 +76,10 @@ namespace SSMS.Persistence.DatabaseConfig
 
             // repositories and unit of work
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<ISizeRepository, SizeRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
             return services;
