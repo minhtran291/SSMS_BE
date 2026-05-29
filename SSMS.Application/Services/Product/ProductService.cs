@@ -57,5 +57,33 @@ namespace SSMS.Application.Services.Product
                 .ProjectTo<ProductDetailDTO>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
         }
+
+        public async Task<ProductFormDataDTO> GetProductFormDataAsync(CancellationToken cancellationToken = default)
+        {
+            var categories = await _unitOfWork.Category
+                .Query()
+                .AsNoTracking()
+                .ProjectTo<CategoryOptionDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
+
+            var brands = await _unitOfWork.Brand
+                .Query()
+                .AsNoTracking()
+                .ProjectTo<BrandOptionDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
+
+            var sizes = await _unitOfWork.Size
+                .Query()
+                .AsNoTracking()
+                .ProjectTo<SizeOptionDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
+
+            return new ProductFormDataDTO
+            {
+                Categories = categories,
+                Brands = brands,
+                Sizes = sizes
+            };
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace SSMS.Application.Services.Product
     {
         Task<IReadOnlyList<ProductListDTO>> GetAllProducts(CancellationToken cancellationToken = default);
         Task<ProductDetailDTO?> GetProductById(int id, CancellationToken cancellationToken = default);
+        Task<ProductFormDataDTO> GetProductFormDataAsync(CancellationToken cancellationToken = default);
     }
 }
