@@ -11,6 +11,8 @@ using SSMS.Persistence.Repositories.Product;
 using SSMS.Persistence.Repositories.Category;
 using SSMS.Persistence.Repositories.Brand;
 using SSMS.Persistence.Repositories.Size;
+using SSMS.Persistence.Repositories.ProductSizePrice;
+using SSMS.Persistence.Repositories.ProductImage;
 
 namespace SSMS.Persistence.DatabaseConfig
 {
@@ -79,6 +81,8 @@ namespace SSMS.Persistence.DatabaseConfig
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ISizeRepository, SizeRepository>();
+            services.AddScoped<IProductSizePriceRepository, ProductSizePriceRepository>();
+            services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 

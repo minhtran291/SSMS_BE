@@ -3,6 +3,8 @@ using SSMS.Persistence.DatabaseConfig;
 using SSMS.Persistence.Repositories.Brand;
 using SSMS.Persistence.Repositories.Category;
 using SSMS.Persistence.Repositories.Product;
+using SSMS.Persistence.Repositories.ProductImage;
+using SSMS.Persistence.Repositories.ProductSizePrice;
 using SSMS.Persistence.Repositories.Size;
 
 namespace SSMS.Persistence.UnitOfWork
@@ -11,7 +13,9 @@ namespace SSMS.Persistence.UnitOfWork
         IProductRepository product, 
         ICategoryRepository category, 
         IBrandRepository brand, 
-        ISizeRepository size) : IUnitOfWork
+        ISizeRepository size, 
+        IProductSizePriceRepository productSizePrice, 
+        IProductImageRepository productImage) : IUnitOfWork
     {
         private readonly SSMSContext _context = context;
         private IDbContextTransaction? _transaction;
@@ -20,15 +24,17 @@ namespace SSMS.Persistence.UnitOfWork
         public ICategoryRepository Category { get; private set; } = category;
         public IBrandRepository Brand { get; private set; } = brand;
         public ISizeRepository Size { get; private set; } = size;
+        public IProductSizePriceRepository ProductSizePrice { get; private set; } = productSizePrice;
+        public IProductImageRepository ProductImage { get; private set; } = productImage;
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
         {
-            _transaction ??= await _context.Database.BeginTransactionAsync();
+            _transaction ??= await _context.Database.BeginTransactionAsync(cancellationToken);
         }
 
         public async Task CommitTransactionAsync()

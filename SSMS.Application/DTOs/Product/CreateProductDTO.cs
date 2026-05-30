@@ -1,4 +1,6 @@
-﻿namespace SSMS.Application.DTOs.Product
+﻿using Microsoft.AspNetCore.Http;
+
+namespace SSMS.Application.DTOs.Product
 {
     public class CreateProductDTO
     {
@@ -10,7 +12,6 @@
         public List<CreateProductImageDTO> Images { get; set; } = [];
     }
 
-
     public class CreateProductSizePriceDTO
     {
         public int SizeId { get; set; }
@@ -19,7 +20,7 @@
 
     public class CreateProductImageDTO
     {
-        public string Image { get; set; } = string.Empty;
+        public IFormFile Image { get; set; } = null!;
         public int DisplayOrder { get; set; }
     }
 }
