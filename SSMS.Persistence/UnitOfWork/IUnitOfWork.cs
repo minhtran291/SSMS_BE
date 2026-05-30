@@ -1,12 +1,9 @@
 ﻿using SSMS.Persistence.Repositories.Brand;
 using SSMS.Persistence.Repositories.Category;
 using SSMS.Persistence.Repositories.Product;
+using SSMS.Persistence.Repositories.ProductImage;
+using SSMS.Persistence.Repositories.ProductSizePrice;
 using SSMS.Persistence.Repositories.Size;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SSMS.Persistence.UnitOfWork
 {
@@ -16,9 +13,10 @@ namespace SSMS.Persistence.UnitOfWork
         ICategoryRepository Category { get; }
         IBrandRepository Brand { get; }
         ISizeRepository Size { get; }
-
+        IProductSizePriceRepository ProductSizePrice { get; }
+        IProductImageRepository ProductImage { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-        Task BeginTransactionAsync();
+        Task BeginTransactionAsync(CancellationToken cancellationToken = default);
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();
     }
