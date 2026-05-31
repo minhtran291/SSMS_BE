@@ -11,24 +11,24 @@ namespace SSMS.Application.Services.Image
             _webHostEnvironment = webHostEnvironment;
         }
 
+        private static readonly string[] AllowedExtensions =
+        {
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".webp"
+        };
+
         public async Task<string> SaveProductImageAsync(
             IFormFile file,
             CancellationToken cancellationToken = default)
         {
-            if (file.Length == 0)
+            if (file is null || file.Length == 0)
                 throw new ArgumentException("Ảnh không hợp lệ!");
-
-            var allowedExtensions = new[]
-            {
-                ".jpg", 
-                ".jpeg", 
-                ".png", 
-                ".webp"
-            };
 
             var extension = Path.GetExtension(file.FileName);
 
-            if (!allowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
+            if (!AllowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
                 throw new ArgumentException("Định dạng ảnh không hợp lệ!");
 
             var fileName = $"{Guid.NewGuid():N}{extension}";

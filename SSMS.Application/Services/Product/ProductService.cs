@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SSMS.Application.DTOs.Product;
 using SSMS.Application.Services.Base;
@@ -12,8 +13,10 @@ namespace SSMS.Application.Services.Product
     public class ProductService(
         IUnitOfWork unitOfWork,
         IMapper mapper, 
-        IImageService imageService) : Service(unitOfWork, mapper), IProductService
+        IImageService imageService, 
+        IValidator<CreateProductDTO> validator) : Service(unitOfWork, mapper), IProductService
     {
+        private readonly IValidator<CreateProductDTO> _validator = validator;
         private readonly IImageService _imageService = imageService;
         public async Task<IReadOnlyList<ProductListDTO>> GetAllProducts(CancellationToken cancellationToken = default)
         {
@@ -92,6 +95,11 @@ namespace SSMS.Application.Services.Product
 
         public async Task CreateProductAsync(CreateProductDTO dto, CancellationToken cancellationToken = default)
         {
+            var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
+
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
             var checkProductName = await _unitOfWork.Product
                 .Query()
                 .AnyAsync(p => string.Equals(p.ProductName, dto.ProductName, StringComparison.OrdinalIgnoreCase), cancellationToken);

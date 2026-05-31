@@ -1,11 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using SSMS.Application.Automapper;
+using SSMS.Application.Services.Image;
 using SSMS.Application.Services.Product;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SSMS.Application.DIConfig
 {
@@ -14,10 +11,22 @@ namespace SSMS.Application.DIConfig
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             // Add AutoMapper
-            services.AddAutoMapper(typeof(ApplicationMapper));
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<ApplicationMapper>();
+            });
+
+            //services.AddAutoMapper(cfg =>
+            //{
+            //    cfg.AddMaps(typeof(ApplicationMapper).Assembly);
+            //});
+
+            // Add Validator
+            services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
             // Add Services
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IImageService, ImageService>();
 
             return services;
         }
