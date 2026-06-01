@@ -34,5 +34,15 @@ namespace SSMS.API.Controllers
             var data = await _productService.GetProductFormDataAsync(cancellationToken);
             return Ok(data);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateProduct([FromForm] CreateProductDTO dto, CancellationToken cancellationToken = default)
+        {
+            var productId = await _productService.CreateProductAsync(dto, cancellationToken);
+            return CreatedAtAction(
+                nameof(GetProductById),
+                new { id = productId },
+                null);
+        }
     }
 }
