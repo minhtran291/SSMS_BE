@@ -1,4 +1,5 @@
-using System.Net;
+using FluentValidation;
+using SSMS.Application.Exceptions;
 
 namespace SSMS.API.Middlewares
 {
@@ -6,16 +7,13 @@ namespace SSMS.API.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
-        private readonly IHostEnvironment _environment;
 
         public ExceptionMiddleware(
             RequestDelegate next,
-            ILogger<ExceptionMiddleware> logger,
-            IHostEnvironment environment)
+            ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
             _logger = logger;
-            _environment = environment;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -38,13 +36,54 @@ namespace SSMS.API.Middlewares
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
+            if (exception is ValidationException validationException)
+            {
+                _logger.LogWarning(
+                    validationException,
+                    "Validation failed. TraceId: {TraceId}",
+                    context.TraceIdentifier);
+
+                context.Response.Clear();
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+
+                var errors = validationException.Errors
+                    .GroupBy(x => x.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(x => x.ErrorMessage).ToArray()
+                    );
+
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    success = false,
+                    statusCode = StatusCodes.Status400BadRequest,
+                    message = "Validation Failed",
+                    errors,
+                    traceId = context.TraceIdentifier
+                });
+
+                return;
+            }
+
             var statusCode = GetStatusCode(exception);
 
-            _logger.LogError(
+            if (exception is BaseException)
+            {
+                _logger.LogWarning(
                 exception,
                 "Unhandled exception. TraceId: {TraceId}, StatusCode: {StatusCode}",
                 context.TraceIdentifier,
                 statusCode);
+            }
+            else
+            {
+                _logger.LogError(
+                exception,
+                "Unhandled exception. TraceId: {TraceId}, StatusCode: {StatusCode}",
+                context.TraceIdentifier,
+                statusCode);
+            }
 
             context.Response.Clear();
             context.Response.StatusCode = statusCode;
@@ -54,11 +93,10 @@ namespace SSMS.API.Middlewares
             {
                 success = false,
                 statusCode,
-                message = GetMessage(statusCode),
+                message = statusCode == StatusCodes.Status500InternalServerError
+                    ? "Internal Server Error"
+                    : exception.Message,
                 traceId = context.TraceIdentifier,
-                details = _environment.IsDevelopment() 
-                    ? exception.Message.ToString() 
-                    : null
             };
 
             await context.Response.WriteAsJsonAsync(response);
@@ -68,22 +106,11 @@ namespace SSMS.API.Middlewares
         {
             return exception switch
             {
-                ArgumentException => (int)HttpStatusCode.BadRequest,
-                BadHttpRequestException => (int)HttpStatusCode.BadRequest,
-                KeyNotFoundException => (int)HttpStatusCode.NotFound,
-                UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
-                _ => (int)HttpStatusCode.InternalServerError
-            };
-        }
+                BaseException baseException => baseException.StatusCode,
 
-        private static string GetMessage(int statusCode)
-        {
-            return statusCode switch
-            {
-                StatusCodes.Status400BadRequest => "Bad Request",
-                StatusCodes.Status401Unauthorized => "Unauthorized",
-                StatusCodes.Status404NotFound => "Not Found",
-                _ => "Internal Server Error"
+                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+
+                _ => StatusCodes.Status500InternalServerError
             };
         }
     }

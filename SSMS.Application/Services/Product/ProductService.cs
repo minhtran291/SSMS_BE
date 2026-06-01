@@ -3,6 +3,8 @@ using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SSMS.Application.DTOs.Product;
+using SSMS.Application.Exceptions;
+//using SSMS.Application.Extensions;
 using SSMS.Application.Services.Base;
 using SSMS.Application.Services.Image;
 using SSMS.Domain.Entities;
@@ -55,14 +57,19 @@ namespace SSMS.Application.Services.Product
         ef core tu translate JOIN
         */
 
-        public async Task<ProductDetailDTO?> GetProductById(int id, CancellationToken cancellationToken = default)
+        public async Task<ProductDetailDTO> GetProductById(int id, CancellationToken cancellationToken = default)
         {
-            return await _unitOfWork.Product
+            var product = await _unitOfWork.Product
                 .Query()
                 .AsNoTracking()
                 .Where(p => p.Id == id)
                 .ProjectTo<ProductDetailDTO>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
+
+            if (product is null)
+                throw new NotFoundException("Sản phẩm không tồn tại");
+
+            return product;
         }
 
         public async Task<ProductFormDataDTO> GetProductFormDataAsync(CancellationToken cancellationToken = default)
@@ -93,20 +100,17 @@ namespace SSMS.Application.Services.Product
             };
         }
 
-        public async Task CreateProductAsync(CreateProductDTO dto, CancellationToken cancellationToken = default)
+        public async Task<int> CreateProductAsync(CreateProductDTO dto, CancellationToken cancellationToken = default)
         {
-            var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
-
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+            await _validator.ValidateAndThrowAsync(dto, cancellationToken);
 
             var checkProductName = await _unitOfWork.Product
                 .Query()
-                .AnyAsync(p => string.Equals(p.ProductName, dto.ProductName, StringComparison.OrdinalIgnoreCase), cancellationToken);
+                .AnyAsync(p => p.ProductName == dto.ProductName, cancellationToken);
                 //p.ProductName.Equals(dto.ProductName, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
             if (checkProductName)
-                throw new Exception("Tên sản phẩm đã tồn tại!");
+                throw new ConflictException("Tên sản phẩm đã tồn tại!");
 
             try
             {
@@ -151,6 +155,8 @@ namespace SSMS.Application.Services.Product
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync();
+
+                return product.Id;
             }
             catch
             {
