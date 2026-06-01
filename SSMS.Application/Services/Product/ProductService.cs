@@ -102,12 +102,23 @@ namespace SSMS.Application.Services.Product
 
         public async Task<int> CreateProductAsync(CreateProductDTO dto, CancellationToken cancellationToken = default)
         {
-            await _validator.ValidateAndThrowAsync(dto, cancellationToken);
+            var result = await _validator.ValidateAsync(dto, cancellationToken);
+
+            if (!result.IsValid)
+            {
+                var errors = result.Errors
+                    .GroupBy(x => x.PropertyName)
+                    .ToDictionary(
+                        g => g.Key, 
+                        g => g.Select(x => x.ErrorMessage)
+                    .ToArray());
+
+                throw new AppValidationException(errors);
+            }
 
             var checkProductName = await _unitOfWork.Product
                 .Query()
                 .AnyAsync(p => p.ProductName == dto.ProductName, cancellationToken);
-                //p.ProductName.Equals(dto.ProductName, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
             if (checkProductName)
                 throw new ConflictException("Tên sản phẩm đã tồn tại!");
