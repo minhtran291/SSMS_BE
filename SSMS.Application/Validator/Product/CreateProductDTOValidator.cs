@@ -50,8 +50,8 @@ namespace SSMS.Application.Validator.Product
                 .WithMessage("Vui lòng chọn một kích thước hợp lệ");
 
             RuleFor(x => x.Price)
-                .GreaterThan(0)
-                .WithMessage("Giá phải lớn hơn 0");
+                .GreaterThanOrEqualTo(1000)
+                .WithMessage("Giá tối thiểu là 1000 đồng");
         }
     }
 
@@ -72,7 +72,7 @@ namespace SSMS.Application.Validator.Product
                 .NotNull()
                 .WithMessage("Hình ảnh không được để trống")
 
-                .Must(file => file is not null && file.Length > 0)
+                .Must(file => file.Length > 0)
                 .WithMessage("Hình ảnh không được để trống")
                 .Must(file =>
                 {

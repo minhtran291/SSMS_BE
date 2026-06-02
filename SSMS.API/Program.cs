@@ -20,7 +20,12 @@ namespace SSMS.API
                 .AddPersistence(builder.Configuration)
                 .AddApplication();
 
-            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+            builder.Services.AddControllers(options =>
+            {
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+                // tat tu dong bao required cho dto de quan ly het o fluent validation
+            })
+            .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
