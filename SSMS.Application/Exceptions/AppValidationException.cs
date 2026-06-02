@@ -2,7 +2,7 @@
 
 namespace SSMS.Application.Exceptions
 {
-    public class AppValidationException : BaseException
+    public sealed class AppValidationException : BaseException
     {
         public Dictionary<string, string[]> Errors { get; }
 
