@@ -42,7 +42,10 @@ namespace SSMS.API.Controllers
             return CreatedAtAction(
                 nameof(GetProductById),
                 new { id = productId },
-                null);
+                new
+                {
+                    id = productId,
+                });
         }
     }
 }

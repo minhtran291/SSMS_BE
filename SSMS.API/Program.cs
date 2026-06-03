@@ -1,9 +1,6 @@
-
-using Microsoft.AspNetCore.Identity;
 using SSMS.API.Config;
 using SSMS.API.Middlewares;
 using SSMS.Application.DIConfig;
-using SSMS.Domain.Entities;
 using SSMS.Persistence.DatabaseConfig;
 
 namespace SSMS.API
@@ -18,17 +15,10 @@ namespace SSMS.API
 
             builder.Services
                 .AddPersistence(builder.Configuration)
-                .AddApplication();
+                .AddApplication()
+                .AddAPI(builder.Configuration);
 
-            builder.Services.AddControllers(options =>
-            {
-                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-                // tat tu dong bao required cho dto de quan ly het o fluent validation
-            })
-            .AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
+            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -47,6 +37,8 @@ namespace SSMS.API
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
+
+            app.UseApi();
 
             app.UseStaticFiles();
 
