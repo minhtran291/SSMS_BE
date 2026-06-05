@@ -40,7 +40,7 @@ namespace SSMS.Application.Services.Product
                     BrandName = p.Product.Brand.BrandName,
                     Thumbnail = p.Product.ProductImages
                         .OrderBy(pi => pi.DisplayOrder)
-                        .Select(pi => "/images/products/" + pi.Image)
+                        .Select(pi => pi.Image)
                         .FirstOrDefault() ?? string.Empty,
                     Price = p.Cheapest != null
                         ? p.Cheapest.Price
