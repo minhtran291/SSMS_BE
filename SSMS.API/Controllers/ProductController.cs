@@ -22,8 +22,6 @@ namespace SSMS.API.Controllers
         public async Task<ActionResult<ProductDetailDTO>> GetProductById(int id, CancellationToken cancellationToken)
         {
             var product = await _productService.GetProductById(id, cancellationToken);
-            if (product is null)
-                return NotFound();
 
             return Ok(product);
         }
@@ -46,6 +44,14 @@ namespace SSMS.API.Controllers
                 {
                     id = productId,
                 });
+        }
+
+        [HttpGet("{id:int}/edit")]
+        public async Task<ActionResult<ProductEditDTO>> GetProductDataEditForm(int id, CancellationToken cancellationToken = default)
+        {
+            var productEditForm = await _productService.GetProductDataEditFormAsync(id, cancellationToken);
+
+            return Ok(productEditForm);
         }
     }
 }
