@@ -8,5 +8,7 @@ namespace SSMS.Application.Services.Product
         Task<ProductDetailDTO> GetProductById(int id, CancellationToken cancellationToken = default);
         Task<ProductFormDataDTO> GetProductFormDataAsync(CancellationToken cancellationToken = default);
         Task<int> CreateProductAsync(CreateProductDTO dto, CancellationToken cancellationToken = default);
+        Task<ProductEditDTO> GetProductDataEditFormAsync(int id, CancellationToken cancellationToken = default);
+        //Task<int> UpdateProductAsync(UpdateProductDTO dto, CancellationToken cancellationToken = default);
     }
 }

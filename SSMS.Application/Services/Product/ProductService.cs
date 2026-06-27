@@ -14,8 +14,8 @@ namespace SSMS.Application.Services.Product
 {
     public class ProductService(
         IUnitOfWork unitOfWork,
-        IMapper mapper, 
-        IImageService imageService, 
+        IMapper mapper,
+        IImageService imageService,
         IValidator<CreateProductDTO> validator) : Service(unitOfWork, mapper), IProductService
     {
         private readonly IValidator<CreateProductDTO> _validator = validator;
@@ -66,10 +66,7 @@ namespace SSMS.Application.Services.Product
                 .ProjectTo<ProductDetailDTO>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (product is null)
-                throw new NotFoundException("Sản phẩm không tồn tại");
-
-            return product;
+            return product is null ? throw new NotFoundException("Không tìm thấy sản phẩm") : product;
         }
 
         public async Task<ProductFormDataDTO> GetProductFormDataAsync(CancellationToken cancellationToken = default)
@@ -109,7 +106,7 @@ namespace SSMS.Application.Services.Product
                 var errors = result.Errors
                     .GroupBy(x => x.PropertyName)
                     .ToDictionary(
-                        g => g.Key, 
+                        g => g.Key,
                         g => g.Select(x => x.ErrorMessage)
                     .ToArray());
 
@@ -148,12 +145,12 @@ namespace SSMS.Application.Services.Product
                 await _unitOfWork.ProductSizePrice.AddRangeAsync(productSizePrices, cancellationToken);
 
                 var productImages = new List<ProductImage>();
-                
+
                 foreach (var imageDto in dto.Images)
                 {
                     var fileName = await _imageService
                         .SaveProductImageAsync(imageDto.Image, cancellationToken);
-                    
+
                     productImages.Add(new ProductImage
                     {
                         ProductId = product.Id,
@@ -175,5 +172,41 @@ namespace SSMS.Application.Services.Product
                 throw;
             }
         }
+
+        public async Task<ProductEditDTO> GetProductDataEditFormAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var product = await _unitOfWork.Product
+                .Query()
+                .AsNoTracking()
+                .Where(p => p.Id == id)
+                .ProjectTo<ProductEditDTO>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            return product is null ? throw new NotFoundException("không tìm thấy sản phẩm") : product;
+        }
+
+        //public async Task<int> UpdateProductAsync(UpdateProductDTO dto, CancellationToken cancellationToken = default)
+        //{
+        //    var result = await _validator.ValidateAsync(dto, cancellationToken);
+
+        //    if (!result.IsValid)
+        //    {
+        //        var errors = result.Errors
+        //            .GroupBy(x => x.PropertyName)
+        //            .ToDictionary(
+        //                g => g.Key,
+        //                g => g.Select(x => x.ErrorMessage)
+        //            .ToArray());
+
+        //        throw new AppValidationException(errors);
+        //    }
+
+        //    var checkProductName = await _unitOfWork.Product
+        //        .Query()
+        //        .AnyAsync(p => p.ProductName == dto.ProductName && , cancellationToken);
+
+        //    if (checkProductName)
+        //        throw new ConflictException("Tên sản phẩm đã tồn tại!");
+        //}
     }
 }
