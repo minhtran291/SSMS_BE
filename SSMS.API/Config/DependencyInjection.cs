@@ -1,4 +1,7 @@
-﻿namespace SSMS.API.Config
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
+namespace SSMS.API.Config
 {
     public static class DependencyInjection
     {
@@ -29,6 +32,32 @@
                             //.AllowCredentials();
                     });
             });
+
+            var keycloak = configuration.GetSection("Keycloak");
+
+            // cau hinh goi key cloak
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = keycloak["Authority"];
+                    options.Audience = keycloak["Audience"];
+                    options.RequireHttpsMetadata = false;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = keycloak["Authority"],
+
+                        ValidateAudience = true,
+                        ValidAudience = keycloak["Audience"],
+
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
+
+            services.AddAuthorization();
 
             return services;
         }
