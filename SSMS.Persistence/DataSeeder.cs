@@ -180,14 +180,12 @@ namespace SSMS.Persistence
             {
                 var admin = new User
                 {
-                    UserName = adminConfig.Username,
+                    Username = adminConfig.Username,
                     Email = adminConfig.Email,
                     FullName = DataSeederConstant.admin.FullName,
                     Avatar = DataSeederConstant.admin.Avatar,
                     Gender = DataSeederConstant.admin.Gender,
-                    EmailConfirmed = true,
                     PhoneNumber = DataSeederConstant.admin.PhoneNumber,
-                    LockoutEnabled = false,
                 };
 
                 var result = await userManager.CreateAsync(admin, adminConfig.Password);
@@ -214,17 +212,15 @@ namespace SSMS.Persistence
                 var customer = new User
                 {
                     //Id = Guid.NewGuid().ToString(),
-                    UserName = customerConfig.Username,
+                    Username = customerConfig.Username,
                     Email = customerConfig.Email,
                     //NormalizedEmail = "MINHTRAN2912003@GMAIL.COM",
                     //NormalizedUserName = "CUSTOMER",
                     FullName = DataSeederConstant.customer.FullName,
                     Avatar = DataSeederConstant.customer.Avatar,
                     Gender = DataSeederConstant.customer.Gender,
-                    EmailConfirmed = true,
                     PhoneNumber = DataSeederConstant.customer.PhoneNumber,
                     //SecurityStamp = Guid.NewGuid().ToString(),
-                    LockoutEnabled = false,
                 };
 
                 var result = await userManager.CreateAsync(customer, customerConfig.Password);

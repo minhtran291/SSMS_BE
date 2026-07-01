@@ -1,8 +1,9 @@
-﻿namespace SSMS.Domain.Entities
+﻿using SSMS.Domain.ExtendedEntities;
+
+namespace SSMS.Domain.Entities
 {
-    public class ProductImage 
+    public class ProductImage : AuditableEntity
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public string Image { get; set; } = string.Empty;
         public int DisplayOrder { get; set; }
