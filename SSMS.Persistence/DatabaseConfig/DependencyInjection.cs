@@ -29,18 +29,10 @@ namespace SSMS.Persistence.DatabaseConfig
             try
             {
                 var context = provider.GetRequiredService<SSMSContext>();
-                var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
-                var userManager = provider.GetRequiredService<UserManager<User>>();
-                var seedOptions = provider.GetRequiredService<IOptions<SeedSettings>>();
 
                 await context.Database.MigrateAsync();
 
-                await DataSeeder.SeedAsync(
-                    context,
-                    roleManager,
-                    userManager,
-                    seedOptions
-                );
+                await DataSeeder.SeedAsync(context);
             }
             catch (Exception ex)
             {
@@ -59,22 +51,20 @@ namespace SSMS.Persistence.DatabaseConfig
                 options.UseSqlServer(configuration.GetConnectionString("DB"));
             });
 
-            // identity
-            services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 8;
-            })
-                .AddEntityFrameworkStores<SSMSContext>()
-                .AddDefaultTokenProviders();
+            //// identity
+            //services.AddIdentity<User, IdentityRole>(options =>
+            //{
+            //    options.User.RequireUniqueEmail = true;
+            //    options.Password.RequireNonAlphanumeric = true;
+            //    options.Password.RequireDigit = true;
+            //    options.Password.RequireLowercase = true;
+            //    options.Password.RequireUppercase = true;
+            //    options.Password.RequiredLength = 8;
+            //})
+            //    .AddEntityFrameworkStores<SSMSContext>()
+            //    .AddDefaultTokenProviders();
 
             // initial values
-            var seedSettingsSection = configuration.GetSection("SeedSettings");
-            services.Configure<SeedSettings>(seedSettingsSection);
 
             // repositories and unit of work
             services.AddScoped<IProductRepository, ProductRepository>();
