@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace SSMS.Application.DTOs.Product
+﻿namespace SSMS.Application.DTOs.Product
 {
     public class CreateProductDTO
     {
@@ -20,7 +18,18 @@ namespace SSMS.Application.DTOs.Product
 
     public class CreateProductImageDTO
     {
-        public IFormFile Image { get; set; } = null!;
+        //public IFormFile Image { get; set; } = null!;
+        public Stream Stream { get; set; } = null!;
+        public string FileName { get; set; } = string.Empty;
+        public string ContentType { get; set; } = string.Empty;
         public int DisplayOrder { get; set; }
+    }
+
+    public class FileData
+    {
+        public required Stream Stream { get; init; }
+        public required string FileName { get; init; }
+        public string? ContentType { get; init; }
+        public long Length { get; init; }
     }
 }

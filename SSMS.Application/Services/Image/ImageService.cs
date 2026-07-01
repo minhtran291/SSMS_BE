@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using SSMS.Application.DTOs.Product;
 using SSMS.Application.Exceptions;
 
 namespace SSMS.Application.Services.Image
 {
     public class ImageService : IImageService
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        public ImageService(IWebHostEnvironment webHostEnvironment)
-        {
-            _webHostEnvironment = webHostEnvironment;
-        }
+        //private readonly IWebHostEnvironment _webHostEnvironment;
 
         /* IWebHostEnvironment cung cap thong tin moi truong chay cua ASP.NET Core
         _webHostEnvironment.WebRootPath co the tra ve D:\Products\SSMS\SSMS.API\wwwroot
@@ -25,7 +20,7 @@ namespace SSMS.Application.Services.Image
         };
 
         public async Task<string> SaveProductImageAsync(
-            IFormFile file,
+            FileData file,
             CancellationToken cancellationToken = default)
         {
             if (file is null || file.Length == 0)
@@ -40,7 +35,7 @@ namespace SSMS.Application.Services.Image
             // :N de loai bo dau gach ngang trong guid
 
             var folderPath = Path.Combine(
-                _webHostEnvironment.WebRootPath,
+                "wwwroot",
                 "images",
                 "products"
             );
@@ -56,12 +51,12 @@ namespace SSMS.Application.Services.Image
 
             // tao duong dan file hoan chinh: duong dan thu muc + ten file
 
-            await using var stream = new FileStream(filePath, FileMode.Create);
+            await using var output = new FileStream(filePath, FileMode.Create);
 
             // mo FileStream de ghi du lieu
             // FileMode.Create: neu chua co -> tao moi, neu da co -> ghi de len
 
-            await file.CopyToAsync(stream, cancellationToken);
+            await file.Stream.CopyToAsync(output, cancellationToken);
 
             // copy du lieu anh vao file
 

@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSMS.Application", "SSMS.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSMS.Domain", "SSMS.Domain\SSMS.Domain.csproj", "{F35B0DF1-8F4A-4CA3-9262-2A258B300BA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSMS.Infrustructure", "SSMS.Infrustructure\SSMS.Infrustructure.csproj", "{F1874614-D55E-4FD2-8C6E-F949D1AEB430}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSMS.Persistence", "SSMS.Persistence\SSMS.Persistence.csproj", "{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSMS.Infrustructure", "SSMS.Persistence\SSMS.Infrustructure.csproj", "{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{F35B0DF1-8F4A-4CA3-9262-2A258B300BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F35B0DF1-8F4A-4CA3-9262-2A258B300BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F35B0DF1-8F4A-4CA3-9262-2A258B300BA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1874614-D55E-4FD2-8C6E-F949D1AEB430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1874614-D55E-4FD2-8C6E-F949D1AEB430}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1874614-D55E-4FD2-8C6E-F949D1AEB430}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1874614-D55E-4FD2-8C6E-F949D1AEB430}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU

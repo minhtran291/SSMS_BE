@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SSMS.Application.Automapper;
+using SSMS.Application.Services.Authentication;
 using SSMS.Application.Services.Image;
 using SSMS.Application.Services.Product;
 
@@ -27,6 +28,9 @@ namespace SSMS.Application.DIConfig
             // Add Services
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IImageService, ImageService>();
+
+            // dang ky dich vụ xac thuc
+            services.AddHttpClient<IAuthenticationService, KeycloakAuthenticationService>();
 
             return services;
         }

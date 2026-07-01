@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -65,6 +64,7 @@ namespace SSMS.Persistence.DatabaseConfig
             //    .AddDefaultTokenProviders();
 
             // initial values
+            services.Configure<KeycloakSettings>(configuration.GetSection("Keycloak"));
 
             // repositories and unit of work
             services.AddScoped<IProductRepository, ProductRepository>();
