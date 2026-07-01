@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SSMS.Application.DTOs.Product;
 
 namespace SSMS.Application.Services.Image
 {
     public interface IImageService
     {
         Task<string> SaveProductImageAsync(
-            IFormFile file, 
+            FileData file, 
             CancellationToken cancellationToken = default);
     }
 }

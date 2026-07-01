@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SSMS.Domain.ConfigOptions;
 
 namespace SSMS.API.Config
 {
@@ -33,27 +34,36 @@ namespace SSMS.API.Config
                     });
             });
 
-            var keycloak = configuration.GetSection("Keycloak");
-
             // cau hinh goi key cloak
+            var jwtSettings = new JwtSettings();
+
+            configuration.GetSection(JwtSettings.SectionName).Bind(jwtSettings);
+
+            services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = keycloak["Authority"];
-                    options.Audience = keycloak["Audience"];
+                    options.Authority = jwtSettings.Authority;
                     options.RequireHttpsMetadata = false;
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = keycloak["Authority"],
+                        ValidIssuer = jwtSettings.Issuer,
 
                         ValidateAudience = true,
-                        ValidAudience = keycloak["Audience"],
+                        ValidAudience = jwtSettings.Audience,
 
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
+
+                        NameClaimType = "preferred_username",
                     };
                 });
 

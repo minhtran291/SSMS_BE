@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SSMS.Domain.Entities;
 
 namespace SSMS.Persistence.DatabaseConfig
 {
-    public class SSMSContext(DbContextOptions<SSMSContext> options) : IdentityDbContext<User>(options)
+    public class SSMSContext(DbContextOptions<SSMSContext> options) : DbContext(options)
     {
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
@@ -25,21 +23,20 @@ namespace SSMS.Persistence.DatabaseConfig
 
                 e.HasKey(u => u.Id);
 
-                e.Property(u => u.UserName)
+                e.Property(u => u.Username)
                     .IsRequired()
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasMaxLength(50);
 
                 e.Property(u => u.Email)
                     .IsRequired()
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasMaxLength(50);
 
-                e.Property(u => u.RefreshToken)
-                    .HasMaxLength(128);
-
-                e.Property(u => u.Status)
-                    .HasConversion<byte>()
-                    .HasColumnType("TINYINT")
-                    .IsRequired();
+                e.Property(u => u.KeycloakId)
+                    .IsRequired()
+                    .IsUnicode(false)
+                    .HasMaxLength(50);
 
                 e.Property(u => u.FullName)
                     .HasMaxLength(128);
@@ -52,54 +49,18 @@ namespace SSMS.Persistence.DatabaseConfig
                     .HasColumnType("TINYINT")
                     .IsRequired();
 
-                e.Property(u => u.SecurityStamp)
-                    .HasMaxLength(100);
-
-                e.Property(u => u.ConcurrencyStamp)
-                    .HasMaxLength(100);
-
                 e.Property(u => u.PhoneNumber)
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
-                e.HasIndex(u => u.UserName)
+                e.HasIndex(u => u.Username)
                     .IsUnique();
 
                 e.HasIndex(u => u.Email)
                     .IsUnique();
-            });
 
-            builder.Entity<IdentityRole>(e =>
-            {
-                e.ToTable("Roles");
-
-                e.Property(r => r.ConcurrencyStamp)
-                    .HasMaxLength(100);
-            });
-
-            builder.Entity<IdentityUserRole<string>>(e =>
-            {
-                e.ToTable("UserRole");
-            });
-
-            builder.Entity<IdentityUserClaim<string>>(e =>
-            {
-                e.ToTable("UserClaims");
-            });
-
-            builder.Entity<IdentityUserLogin<string>>(e =>
-            {
-                e.ToTable("UserLogins");
-            });
-
-            builder.Entity<IdentityRoleClaim<string>>(e =>
-            {
-                e.ToTable("RoleClaims");
-            });
-
-            builder.Entity<IdentityUserToken<string>>(e =>
-            {
-                e.ToTable("UserTokens");
+                e.HasIndex(u => u.KeycloakId)
+                    .IsUnique();
             });
 
             builder.Entity<Category>(e =>
@@ -196,10 +157,7 @@ namespace SSMS.Persistence.DatabaseConfig
 
             builder.Entity<ProductImage>(e =>
             {
-                e.HasKey(e => e.Id);
-
-                e.Property(e => e.Id)
-                    .ValueGeneratedOnAdd();
+                e.HasKey(e => new { e.ProductId, e.Image });
 
                 e.Property(e => e.Image)
                     .HasMaxLength(512)
@@ -207,9 +165,6 @@ namespace SSMS.Persistence.DatabaseConfig
 
                 e.Property(e => e.DisplayOrder)
                     .IsRequired();
-
-                e.HasIndex(e => new {e.ProductId, e.Image})
-                    .IsUnique();
 
                 e.HasIndex(e => new { e.ProductId, e.DisplayOrder })
                     .IsUnique();

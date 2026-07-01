@@ -67,27 +67,27 @@ namespace SSMS.Application.Validator.Product
 
         public CreateProductImageDTOValidator()
         {
-            RuleFor(x => x.Image)
-                .Cascade(CascadeMode.Stop)
-                .NotNull()
-                .WithMessage("Hình ảnh không được để trống")
+            //RuleFor(x => x.Image)
+            //    .Cascade(CascadeMode.Stop)
+            //    .NotNull()
+            //    .WithMessage("Hình ảnh không được để trống")
 
-                .Must(file => file.Length > 0)
-                .WithMessage("Hình ảnh không được để trống")
-                .Must(file =>
-                {
-                    return AllowedExtensions.Contains(
-                        Path.GetExtension(file.FileName), 
-                        StringComparer.OrdinalIgnoreCase);
-                })
-                .WithMessage("Định dạng ảnh không hợp lệ")
+            //    .Must(file => file.Length > 0)
+            //    .WithMessage("Hình ảnh không được để trống")
+            //    .Must(file =>
+            //    {
+            //        return AllowedExtensions.Contains(
+            //            Path.GetExtension(file.FileName), 
+            //            StringComparer.OrdinalIgnoreCase);
+            //    })
+            //    .WithMessage("Định dạng ảnh không hợp lệ")
 
-                .Must(file => file.Length <= 5 * 1024 * 1024)
-                .WithMessage("Kích thước ảnh tối đa là 5MB");
+            //    .Must(file => file.Length <= 5 * 1024 * 1024)
+            //    .WithMessage("Kích thước ảnh tối đa là 5MB");
 
-            RuleFor(x => x.DisplayOrder)
-                .GreaterThanOrEqualTo(0)
-                .WithMessage("Thứ tự hiển thị phải lớn hơn hoặc bằng 0");
+            //RuleFor(x => x.DisplayOrder)
+            //    .GreaterThanOrEqualTo(0)
+            //    .WithMessage("Thứ tự hiển thị phải lớn hơn hoặc bằng 0");
         }
     }
 }

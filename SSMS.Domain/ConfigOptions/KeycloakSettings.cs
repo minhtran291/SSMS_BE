@@ -2,11 +2,11 @@
 {
     public class KeycloakSettings
     {
-        public string AuthServerUrl { get; set; }
-        public string Realm {  get; set; }
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
-        public string AddminClientId { get; set; }
-        public string AdminClientSecret { get; set; }
+        public string AuthServerUrl { get; set; } = string.Empty;
+        public string Realm {  get; set; } = string.Empty;
+        public string ClientId { get; set; } = string.Empty;
+        public string ClientSecret { get; set; } = string.Empty;
+        public string AddminClientId { get; set; } = string.Empty;
+        public string AdminClientSecret { get; set; } = string.Empty;
     }
 }

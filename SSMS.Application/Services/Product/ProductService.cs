@@ -146,18 +146,18 @@ namespace SSMS.Application.Services.Product
 
                 var productImages = new List<ProductImage>();
 
-                foreach (var imageDto in dto.Images)
-                {
-                    var fileName = await _imageService
-                        .SaveProductImageAsync(imageDto.Image, cancellationToken);
+                //foreach (var imageDto in dto.Images)
+                //{
+                //    var fileName = await _imageService
+                //        .SaveProductImageAsync(imageDto.Image, cancellationToken);
 
-                    productImages.Add(new ProductImage
-                    {
-                        ProductId = product.Id,
-                        Image = fileName,
-                        DisplayOrder = imageDto.DisplayOrder
-                    });
-                }
+                //    productImages.Add(new ProductImage
+                //    {
+                //        ProductId = product.Id,
+                //        Image = fileName,
+                //        DisplayOrder = imageDto.DisplayOrder
+                //    });
+                //}
 
                 await _unitOfWork.ProductImage.AddRangeAsync(productImages, cancellationToken);
 

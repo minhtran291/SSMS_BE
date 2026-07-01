@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net;
 
 namespace SSMS.Application.Exceptions
 {
@@ -7,7 +7,7 @@ namespace SSMS.Application.Exceptions
         public Dictionary<string, string[]> Errors { get; }
 
         public AppValidationException(Dictionary<string, string[]> errors) 
-            : base("Validation Failed", StatusCodes.Status400BadRequest)
+            : base("Validation Failed", (int)HttpStatusCode.BadRequest)
         {
             Errors = errors;
         }
