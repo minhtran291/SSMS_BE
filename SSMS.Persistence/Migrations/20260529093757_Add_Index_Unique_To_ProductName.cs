@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SSMS.Persistence.Migrations
+namespace SSMS.Infrustructure.Migrations
 {
     /// <inheritdoc />
     public partial class Add_Index_Unique_To_ProductName : Migration

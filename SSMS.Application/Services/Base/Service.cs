@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SSMS.Persistence.UnitOfWork;
+using SSMS.Domain;
 
 namespace SSMS.Application.Services.Base
 {

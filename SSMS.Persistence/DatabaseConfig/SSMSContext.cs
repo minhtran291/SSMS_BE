@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SSMS.Domain.Entities;
 
-namespace SSMS.Persistence.DatabaseConfig
+namespace SSMS.Infrustructure.DatabaseConfig
 {
     public class SSMSContext(DbContextOptions<SSMSContext> options) : DbContext(options)
     {

@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SSMS.Persistence.Migrations
+namespace SSMS.Infrustructure.Migrations
 {
     /// <inheritdoc />
     public partial class Modify_DataBase : Migration

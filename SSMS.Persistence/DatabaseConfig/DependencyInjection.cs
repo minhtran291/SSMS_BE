@@ -2,18 +2,22 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SSMS.Domain.ConfigOptions;
-using SSMS.Domain.Entities;
-using SSMS.Persistence.UnitOfWork;
-using SSMS.Persistence.Repositories.Product;
-using SSMS.Persistence.Repositories.Category;
-using SSMS.Persistence.Repositories.Brand;
-using SSMS.Persistence.Repositories.Size;
-using SSMS.Persistence.Repositories.ProductSizePrice;
-using SSMS.Persistence.Repositories.ProductImage;
+using SSMS.Domain;
+using SSMS.Infrustructure.Repositories.Brands;
+using SSMS.Infrustructure.Repositories.Categories;
+using SSMS.Infrustructure.Repositories.Products;
+using SSMS.Infrustructure.Repositories.ProductImages;
+using SSMS.Infrustructure.Repositories.ProductSizePrices;
+using SSMS.Infrustructure.Repositories.Sizes;
+using SSMS.Domain.Repositories.Products;
+using SSMS.Domain.Repositories.Categories;
+using SSMS.Domain.Repositories.Brands;
+using SSMS.Domain.Repositories.Sizes;
+using SSMS.Domain.Repositories.ProductSizePrices;
+using SSMS.Domain.Repositories.ProductImages;
 
-namespace SSMS.Persistence.DatabaseConfig
+namespace SSMS.Infrustructure.DatabaseConfig
 {
     public static class DependencyInjection
     {
@@ -74,7 +78,7 @@ namespace SSMS.Persistence.DatabaseConfig
             services.AddScoped<IProductSizePriceRepository, ProductSizePriceRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

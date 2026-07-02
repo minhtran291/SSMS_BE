@@ -1,7 +1,7 @@
 using SSMS.API.Config;
 using SSMS.API.Middlewares;
 using SSMS.Application.DIConfig;
-using SSMS.Persistence.DatabaseConfig;
+using SSMS.Infrustructure.DatabaseConfig;
 
 namespace SSMS.API
 {

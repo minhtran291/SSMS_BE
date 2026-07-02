@@ -1,74 +1,100 @@
 using Microsoft.EntityFrameworkCore;
-using SSMS.Persistence.DatabaseConfig;
-using System.Linq.Expressions;
+using SSMS.Domain.ExtendedEntities;
+using SSMS.Domain.Repositories.Base;
+using SSMS.Infrustructure.DatabaseConfig;
 
-namespace SSMS.Persistence.Repositories.Base;
+namespace SSMS.Infrustructure.Repositories.Base;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    private readonly DbSet<T> _dbSet;
     protected readonly SSMSContext _context;
+    private DbSet<T>? _entities;
 
     public Repository(SSMSContext context)
     {
-        _context = context;
-        _dbSet = _context.Set<T>();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public IQueryable<T> Query()
+    protected virtual DbSet<T> Entities => _entities ??= _context.Set<T>();
+
+    public IQueryable<T> Table => Entities;
+
+    public virtual async Task InsertAsync(T entity, CancellationToken cancellationToken = default)
     {
-        return _dbSet;
+        ArgumentNullException.ThrowIfNull(entity);
+        await Entities.AddAsync(entity, cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public virtual void Insert(T entity)
     {
-        return await _dbSet.ToListAsync();
+        ArgumentNullException.ThrowIfNull(entity);
+        Entities.Add(entity);
     }
 
-    public async Task<T?> GetByIdAsync(object id)
+    public virtual async Task InsertAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.FindAsync(id);
+        ArgumentNullException.ThrowIfNull(entities);
+        await Entities.AddRangeAsync(entities, cancellationToken);
     }
 
-    public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
+    public virtual void Insert(IEnumerable<T> entities)
     {
-        await _dbSet.AddAsync(entity, cancellationToken);
+        ArgumentNullException.ThrowIfNull(entities);
+        Entities.AddRange(entities);
     }
 
-    public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    public virtual void Update(T entity)
     {
-        await _dbSet.AddRangeAsync(entities, cancellationToken);
+        ArgumentNullException.ThrowIfNull(entity);
+        Entities.Update(entity);
     }
 
-    public void Update(T entity)
+    public virtual void Update(IEnumerable<T> entities)
     {
-        _dbSet.Update(entity);
+        ArgumentNullException.ThrowIfNull(entities);
+        Entities.UpdateRange(entities);
     }
 
-    public void UpdateRange(IEnumerable<T> entities)
+    public virtual void Delete(T entity)
     {
-        _dbSet.UpdateRange(entities);
+        ArgumentNullException.ThrowIfNull(entity);
+        switch (entity)
+        {
+            case ISoftDeletedEntity softDeletedEntity:
+                softDeletedEntity.IsDeleted = true;
+                Entities.Update(entity);
+                break;
+
+            default:
+                Entities.Remove(entity);
+                break;
+        }
     }
 
-    public void Remove(T entity)
+    public virtual void Delete(IEnumerable<T> entities)
     {
-        _dbSet.Remove(entity);
-    }
+        ArgumentNullException.ThrowIfNull(entities);
 
-    public void RemoveRange(IEnumerable<T> entities)
-    {
-        _dbSet.RemoveRange(entities);
-    }
+        if (!entities.Any())
+            return;
 
-    public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
-    {
-        return await _dbSet.AnyAsync(predicate);
-    }
+        var softDeleteList = new List<T>();
+        var hardDeleteList = new List<T>();
 
-    public async Task<T?> FirstOrDefaultAsync(
-        Expression<Func<T, bool>> predicate, 
-        CancellationToken cancellationToken = default)
-    {
-        return await _dbSet.FirstOrDefaultAsync(predicate, cancellationToken);
+        foreach (var entity in entities)
+        {
+            if (entity is ISoftDeletedEntity soft)
+            {
+                soft.IsDeleted = true;
+                softDeleteList.Add(entity);
+            }
+            else
+                hardDeleteList.Add(entity);
+        }
+        if (softDeleteList.Any())
+            Entities.UpdateRange(softDeleteList);
+
+        if (hardDeleteList.Any())
+            Entities.RemoveRange(hardDeleteList);
     }
 }

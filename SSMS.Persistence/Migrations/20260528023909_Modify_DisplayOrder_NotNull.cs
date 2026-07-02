@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SSMS.Persistence.Migrations
+namespace SSMS.Infrustructure.Migrations
 {
     /// <inheritdoc />
     public partial class Modify_DisplayOrder_NotNull : Migration

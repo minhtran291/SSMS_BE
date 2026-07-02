@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SSMS.Persistence.DatabaseConfig;
+using SSMS.Infrustructure.DatabaseConfig;
 
 #nullable disable
 
-namespace SSMS.Persistence.Migrations
+namespace SSMS.Infrustructure.Migrations
 {
     [DbContext(typeof(SSMSContext))]
     [Migration("20260701065827_Modify_DataBase")]

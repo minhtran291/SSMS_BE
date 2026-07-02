@@ -8,49 +8,49 @@ namespace SSMS.API.Controllers
     [ApiController]
     public class ProductController(IProductService productService) : ControllerBase
     {
-        private readonly IProductService _productService = productService;
+        //private readonly IProductService _productService = productService;
 
-        [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductListDTO>>> GetAllProducts(CancellationToken cancellationToken)
-        {
-            var products = await _productService.GetAllProducts(cancellationToken);
-            return Ok(products);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IReadOnlyList<ProductListDTO>>> GetAllProducts(CancellationToken cancellationToken)
+        //{
+        //    var products = await _productService.GetAllProducts(cancellationToken);
+        //    return Ok(products);
+        //}
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<ProductDetailDTO>> GetProductById(int id, CancellationToken cancellationToken)
-        {
-            var product = await _productService.GetProductById(id, cancellationToken);
+        //[HttpGet("{id:int}")]
+        //public async Task<ActionResult<ProductDetailDTO>> GetProductById(int id, CancellationToken cancellationToken)
+        //{
+        //    var product = await _productService.GetProductById(id, cancellationToken);
 
-            return Ok(product);
-        }
+        //    return Ok(product);
+        //}
 
-        [HttpGet("form-data")]
-        public async Task<ActionResult<ProductFormDataDTO>> GetProductFormData(CancellationToken cancellationToken)
-        {
-            var data = await _productService.GetProductFormDataAsync(cancellationToken);
-            return Ok(data);
-        }
+        //[HttpGet("form-data")]
+        //public async Task<ActionResult<ProductFormDataDTO>> GetProductFormData(CancellationToken cancellationToken)
+        //{
+        //    var data = await _productService.GetProductFormDataAsync(cancellationToken);
+        //    return Ok(data);
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult> CreateProduct([FromForm] CreateProductDTO dto, CancellationToken cancellationToken = default)
-        {
-            var productId = await _productService.CreateProductAsync(dto, cancellationToken);
-            return CreatedAtAction(
-                nameof(GetProductById),
-                new { id = productId },
-                new
-                {
-                    id = productId,
-                });
-        }
+        //[HttpPost]
+        //public async Task<ActionResult> CreateProduct([FromForm] CreateProductDTO dto, CancellationToken cancellationToken = default)
+        //{
+        //    var productId = await _productService.CreateProductAsync(dto, cancellationToken);
+        //    return CreatedAtAction(
+        //        nameof(GetProductById),
+        //        new { id = productId },
+        //        new
+        //        {
+        //            id = productId,
+        //        });
+        //}
 
-        [HttpGet("{id:int}/edit")]
-        public async Task<ActionResult<ProductEditDTO>> GetProductDataEditForm(int id, CancellationToken cancellationToken = default)
-        {
-            var productEditForm = await _productService.GetProductDataEditFormAsync(id, cancellationToken);
+        //[HttpGet("{id:int}/edit")]
+        //public async Task<ActionResult<ProductEditDTO>> GetProductDataEditForm(int id, CancellationToken cancellationToken = default)
+        //{
+        //    var productEditForm = await _productService.GetProductDataEditFormAsync(id, cancellationToken);
 
-            return Ok(productEditForm);
-        }
+        //    return Ok(productEditForm);
+        //}
     }
 }
