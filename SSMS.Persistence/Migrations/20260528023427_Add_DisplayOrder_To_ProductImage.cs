@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SSMS.Persistence.Migrations
+namespace SSMS.Infrustructure.Migrations
 {
     /// <inheritdoc />
     public partial class Add_DisplayOrder_To_ProductImage : Migration

@@ -1,9 +1,9 @@
 using SSMS.Domain.Constant;
 using SSMS.Domain.Entities;
-using SSMS.Persistence.DatabaseConfig;
-using SSMS.Persistence.Seed;
+using SSMS.Infrustructure.DatabaseConfig;
+using SSMS.Infrustructure.Seed;
 
-namespace SSMS.Persistence
+namespace SSMS.Infrustructure
 {
     public static class DataSeeder
     {

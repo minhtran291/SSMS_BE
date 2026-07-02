@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SSMS.Persistence.DatabaseConfig;
+using SSMS.Infrustructure.DatabaseConfig;
 
 #nullable disable
 
-namespace SSMS.Persistence.Migrations
+namespace SSMS.Infrustructure.Migrations
 {
     [DbContext(typeof(SSMSContext))]
     partial class SSMSContextModelSnapshot : ModelSnapshot

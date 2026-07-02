@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SSMS.Application\SSMS.Application.csproj" />
+    <ProjectReference Include="..\SSMS.Persistence\SSMS.Infrustructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

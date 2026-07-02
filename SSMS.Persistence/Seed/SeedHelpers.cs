@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace SSMS.Persistence.Seed
+namespace SSMS.Infrustructure.Seed
 {
     public static class SeedHelpers
     {
