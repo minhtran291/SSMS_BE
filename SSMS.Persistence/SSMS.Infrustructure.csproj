@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SSMS.Application\SSMS.Application.csproj" />
     <ProjectReference Include="..\SSMS.Domain\SSMS.Domain.csproj" />
   </ItemGroup>
 

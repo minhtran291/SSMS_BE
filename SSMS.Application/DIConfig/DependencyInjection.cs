@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SSMS.Application.Automapper;
-using SSMS.Application.Services.Authentication;
-using SSMS.Application.Services.Image;
+using SSMS.Application.Behaviors;
 using SSMS.Application.Services.Product;
+using System.Reflection;
 
 namespace SSMS.Application.DIConfig
 {
@@ -27,10 +28,15 @@ namespace SSMS.Application.DIConfig
 
             // Add Services
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IImageService, ImageService>();
 
-            // dang ky dich vụ xac thuc
-            services.AddHttpClient<IAuthenticationService, KeycloakAuthenticationService>();
+            // add MediatR
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+
+                // dang ky pipeline behavior de tu dong validate
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            });
 
             return services;
         }

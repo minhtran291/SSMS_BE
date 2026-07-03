@@ -2,20 +2,24 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SSMS.Domain.ConfigOptions;
+using SSMS.Application.Services.Authentication;
+using SSMS.Application.Services.Image;
 using SSMS.Domain;
+using SSMS.Domain.ConfigOptions;
+using SSMS.Domain.Repositories.Brands;
+using SSMS.Domain.Repositories.Categories;
+using SSMS.Domain.Repositories.ProductImages;
+using SSMS.Domain.Repositories.Products;
+using SSMS.Domain.Repositories.ProductSizePrices;
+using SSMS.Domain.Repositories.Sizes;
 using SSMS.Infrustructure.Repositories.Brands;
 using SSMS.Infrustructure.Repositories.Categories;
-using SSMS.Infrustructure.Repositories.Products;
 using SSMS.Infrustructure.Repositories.ProductImages;
+using SSMS.Infrustructure.Repositories.Products;
 using SSMS.Infrustructure.Repositories.ProductSizePrices;
 using SSMS.Infrustructure.Repositories.Sizes;
-using SSMS.Domain.Repositories.Products;
-using SSMS.Domain.Repositories.Categories;
-using SSMS.Domain.Repositories.Brands;
-using SSMS.Domain.Repositories.Sizes;
-using SSMS.Domain.Repositories.ProductSizePrices;
-using SSMS.Domain.Repositories.ProductImages;
+using SSMS.Infrustructure.Services.Authentication;
+using SSMS.Infrustructure.Services.Image;
 
 namespace SSMS.Infrustructure.DatabaseConfig
 {
@@ -44,7 +48,7 @@ namespace SSMS.Infrustructure.DatabaseConfig
             }
         }
 
-        public static IServiceCollection AddPersistence(
+        public static IServiceCollection AddInfrustructure(
             this IServiceCollection services, 
             IConfiguration configuration)
         {
@@ -79,6 +83,12 @@ namespace SSMS.Infrustructure.DatabaseConfig
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // dang ky dich vụ xac thuc
+            services.AddHttpClient<IAuthenticationService, KeycloakAuthenticationService>();
+
+            // services
+            services.AddScoped<IImageService, ImageService>();
 
             return services;
         }

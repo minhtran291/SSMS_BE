@@ -1,7 +1,8 @@
 ﻿using SSMS.Application.DTOs.Product;
 using SSMS.Application.Exceptions;
+using SSMS.Application.Services.Image;
 
-namespace SSMS.Application.Services.Image
+namespace SSMS.Infrustructure.Services.Image
 {
     public class ImageService : IImageService
     {

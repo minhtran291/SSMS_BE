@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
 using SSMS.Application.DTOs.Auth;
 using SSMS.Application.Exceptions;
+using SSMS.Application.Services.Authentication;
 using SSMS.Domain.ConfigOptions;
 using System.Net.Http.Json;
 
-namespace SSMS.Application.Services.Authentication
+namespace SSMS.Infrustructure.Services.Authentication
 {
     public class KeycloakAuthenticationService : IAuthenticationService
     {
