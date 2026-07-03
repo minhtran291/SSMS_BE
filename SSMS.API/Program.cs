@@ -14,7 +14,7 @@ namespace SSMS.API
             // Add services to the container.
 
             builder.Services
-                .AddPersistence(builder.Configuration)
+                .AddInfrustructure(builder.Configuration)
                 .AddApplication()
                 .AddAPI(builder.Configuration);
 

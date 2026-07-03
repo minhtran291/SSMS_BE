@@ -16,9 +16,16 @@ namespace SSMS.API.Config
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
                 // tat tu dong bao required cho dto de quan ly het o fluent validation
             })
-            .AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //.AddNewtonsoftJson(options =>
+            //{
+            //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //})
+            .AddJsonOptions(options => {
+            //    //var jsonOptions = options.JsonSerializerOptions;
+
+            //    //jsonOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+
+            //    //jsonOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
             });
 
             services.AddCors(options =>
