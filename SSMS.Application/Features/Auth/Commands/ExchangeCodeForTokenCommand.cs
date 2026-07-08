@@ -28,6 +28,8 @@ namespace SSMS.Application.Features.Auth.Commands
 
             var claims = DecodeTokenAndGetClaims(tokenResponse.AccessToken);
 
+            tokenResponse.FullName = claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "";
+
             tokenResponse.Roles = ExtractRolesFromClaims(claims);
 
             return tokenResponse;
