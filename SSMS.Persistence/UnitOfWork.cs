@@ -9,12 +9,12 @@ namespace SSMS.Infrustructure
         private readonly SSMSContext _context = context;
         private IDbContextTransaction? _transaction;
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
+        public async Task BeginTransactionAsync(CancellationToken cancellationToken)
         {
             if (_transaction is not null)
                 throw new InvalidOperationException("Transaction đã được bắt đầu.");
@@ -22,7 +22,7 @@ namespace SSMS.Infrustructure
             _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
         }
 
-        public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+        public async Task CommitTransactionAsync(CancellationToken cancellationToken)
         {
             if (_transaction is null)
                 throw new InvalidOperationException("Transaction chưa được bắt đầu.");
@@ -40,7 +40,7 @@ namespace SSMS.Infrustructure
             }
         }
 
-        public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
+        public async Task RollbackTransactionAsync(CancellationToken cancellationToken)
         {
             if (_transaction is null)
                 throw new InvalidOperationException("Transaction chưa được bắt đầu.");
