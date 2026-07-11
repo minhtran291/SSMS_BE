@@ -18,7 +18,7 @@ namespace SSMS.Infrustructure.Services.Authentication
             _httpClient = httpClient;
             _keycloakSettings = keycloakOptions.Value;
         }
-        public async Task<KeycloakTokenResponse> ExchangeCodeForTokenAsync(string authorizationCode, string redirectUri, CancellationToken cancellationToken = default)
+        public async Task<KeycloakTokenResponse> ExchangeCodeForTokenAsync(string authorizationCode, string redirectUri, CancellationToken cancellationToken)
         {
             var content = new FormUrlEncodedContent(
             [
@@ -55,7 +55,7 @@ namespace SSMS.Infrustructure.Services.Authentication
             return tokenResponse ?? throw new BadRequestException("Không nhập được phản hồi token hợp lệ.");
         }
 
-        public async Task<KeycloakTokenResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+        public async Task<KeycloakTokenResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
         {
             var content = new FormUrlEncodedContent(
             [

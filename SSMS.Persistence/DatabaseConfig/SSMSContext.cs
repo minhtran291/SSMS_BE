@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SSMS.Domain.Entities;
+using SSMS.Domain.ExtendedEntities;
 
 namespace SSMS.Infrustructure.DatabaseConfig
 {
@@ -38,20 +39,20 @@ namespace SSMS.Infrustructure.DatabaseConfig
                     .IsUnicode(false)
                     .HasMaxLength(50);
 
-                e.Property(u => u.FullName)
-                    .HasMaxLength(128);
+                //e.Property(u => u.FullName)
+                //    .HasMaxLength(128);
 
                 e.Property(u => u.Avatar)
                     .HasMaxLength(256);
 
-                e.Property(u => u.Gender)
-                    .HasConversion<byte>()
-                    .HasColumnType("TINYINT")
-                    .IsRequired();
+                //e.Property(u => u.Gender)
+                //    .HasConversion<byte>()
+                //    .HasColumnType("TINYINT")
+                //    .IsRequired();
 
-                e.Property(u => u.PhoneNumber)
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
+                //e.Property(u => u.PhoneNumber)
+                //    .HasMaxLength(16)
+                //    .IsUnicode(false);
 
                 e.HasIndex(u => u.Username)
                     .IsUnique();
@@ -174,6 +175,25 @@ namespace SSMS.Infrustructure.DatabaseConfig
                     .HasForeignKey(pi => pi.ProductId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is AuditableEntity
+                    && (e.State == EntityState.Added
+                        || e.State == EntityState.Modified));
+
+            foreach(var entityEntry in entries)
+            {
+                ((AuditableEntity)entityEntry.Entity).UpdatedOnUtc = DateTime.UtcNow;
+
+                if (entityEntry.State == EntityState.Added)
+                    ((AuditableEntity)entityEntry.Entity).CreatedOnUtc = DateTime.UtcNow;
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

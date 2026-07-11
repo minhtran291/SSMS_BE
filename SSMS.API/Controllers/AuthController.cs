@@ -10,9 +10,9 @@ namespace SSMS.API.Controllers
     {
         [HttpPost("token")]
         [AllowAnonymous]
-        public async Task<IActionResult> ExchangeToken([FromBody] ExchangeCodeForTokenCommand command)
+        public async Task<IActionResult> ExchangeToken([FromBody] ExchangeCodeForTokenCommand command, CancellationToken cancellationToken)
         {
-            var result = await Mediator.Send(command);
+            var result = await Mediator.Send(command, cancellationToken);
             return Ok(result);
         }
     }

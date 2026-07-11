@@ -2,60 +2,73 @@ using Microsoft.EntityFrameworkCore;
 using SSMS.Domain.ExtendedEntities;
 using SSMS.Domain.Repositories.Base;
 using SSMS.Infrustructure.DatabaseConfig;
+using System.Linq.Expressions;
 
 namespace SSMS.Infrustructure.Repositories.Base;
 
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     protected readonly SSMSContext _context;
-    private DbSet<T>? _entities;
+    private DbSet<TEntity>? _entities;
 
     public Repository(SSMSContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    protected virtual DbSet<T> Entities => _entities ??= _context.Set<T>();
+    protected virtual DbSet<TEntity> Entities => _entities ??= _context.Set<TEntity>();
 
-    public IQueryable<T> Table => Entities;
+    public IQueryable<TEntity> Table => Entities;
 
-    public virtual async Task InsertAsync(T entity, CancellationToken cancellationToken = default)
+    protected virtual IQueryable<TEntity> AddDeletedFilter(IQueryable<TEntity> query, bool includeDeleted)
+    {
+        if (includeDeleted)
+            return query;
+
+        // chi lay nhung cai ko xoa
+        if (typeof(ISoftDeletedEntity).IsAssignableFrom(typeof(TEntity)))
+            query = query.Where(e => !((ISoftDeletedEntity)e).IsDeleted);
+
+        return query;
+    }
+
+    public virtual async Task InsertAsync(TEntity entity, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entity);
         await Entities.AddAsync(entity, cancellationToken);
     }
 
-    public virtual void Insert(T entity)
+    public virtual void Insert(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
         Entities.Add(entity);
     }
 
-    public virtual async Task InsertAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    public virtual async Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
         await Entities.AddRangeAsync(entities, cancellationToken);
     }
 
-    public virtual void Insert(IEnumerable<T> entities)
+    public virtual void Insert(IEnumerable<TEntity> entities)
     {
         ArgumentNullException.ThrowIfNull(entities);
         Entities.AddRange(entities);
     }
 
-    public virtual void Update(T entity)
+    public virtual void Update(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
         Entities.Update(entity);
     }
 
-    public virtual void Update(IEnumerable<T> entities)
+    public virtual void Update(IEnumerable<TEntity> entities)
     {
         ArgumentNullException.ThrowIfNull(entities);
         Entities.UpdateRange(entities);
     }
 
-    public virtual void Delete(T entity)
+    public virtual void Delete(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
         switch (entity)
@@ -71,15 +84,15 @@ public class Repository<T> : IRepository<T> where T : class
         }
     }
 
-    public virtual void Delete(IEnumerable<T> entities)
+    public virtual void Delete(IEnumerable<TEntity> entities)
     {
         ArgumentNullException.ThrowIfNull(entities);
 
         if (!entities.Any())
             return;
 
-        var softDeleteList = new List<T>();
-        var hardDeleteList = new List<T>();
+        var softDeleteList = new List<TEntity>();
+        var hardDeleteList = new List<TEntity>();
 
         foreach (var entity in entities)
         {
@@ -96,5 +109,11 @@ public class Repository<T> : IRepository<T> where T : class
 
         if (hardDeleteList.Any())
             Entities.RemoveRange(hardDeleteList);
+    }
+
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken, bool includeDeleted)
+    {
+        var query = AddDeletedFilter(Table, includeDeleted);
+        return await query.AnyAsync(expression, cancellationToken);
     }
 }

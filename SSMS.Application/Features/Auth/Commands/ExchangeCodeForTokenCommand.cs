@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using SSMS.Application.DTOs.Auth;
 using SSMS.Application.Services.Authentication;
+using SSMS.Domain;
+using SSMS.Domain.Entities;
+using SSMS.Domain.Repositories.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
@@ -16,10 +19,17 @@ namespace SSMS.Application.Features.Auth.Commands
     public class ExchangeCodeForTokenCommandHandler : IRequestHandler<ExchangeCodeForTokenCommand, KeycloakTokenResponse>
     {
         private readonly IAuthenticationService _authenticationService;
+        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ExchangeCodeForTokenCommandHandler(IAuthenticationService authenticationService)
+        public ExchangeCodeForTokenCommandHandler(
+            IAuthenticationService authenticationService, 
+            IUserRepository userRepository, 
+            IUnitOfWork unitOfWork)
         {
             _authenticationService = authenticationService;
+            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<KeycloakTokenResponse> Handle(ExchangeCodeForTokenCommand request, CancellationToken cancellationToken)
@@ -31,6 +41,8 @@ namespace SSMS.Application.Features.Auth.Commands
             tokenResponse.FullName = claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "";
 
             tokenResponse.Roles = ExtractRolesFromClaims(claims);
+
+            await ProvisionUserAsync(claims, cancellationToken);
 
             return tokenResponse;
         }
@@ -61,13 +73,41 @@ namespace SSMS.Application.Features.Auth.Commands
                     {
                         foreach(var role in clientRolesElement.EnumerateArray())
                         {
-                            allRoles.Add(role.GetString());
+                            if(role.GetString() is string roleName)
+                                allRoles.Add(roleName);
                         }
                     }
                 }
             }
 
             return allRoles;
+        }
+
+        private async Task ProvisionUserAsync(List<Claim> claims, CancellationToken cancellationToken)
+        {
+            var keycloakId = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (string.IsNullOrEmpty(keycloakId))
+                throw new InvalidOperationException("Token không chứa 'sub' claim.");
+
+            var isExist = await _userRepository.AnyAsync(u => u.KeycloakId == keycloakId, cancellationToken);
+
+            if (!isExist)
+            {
+                var user = new User
+                {
+                    KeycloakId = keycloakId,
+                    Username = claims.FirstOrDefault(c => c.Type == "preferred_username")?.Value ?? "",
+                    Email = claims.FirstOrDefault(c => c.Type == "email")?.Value ?? "",
+                    FirstName = claims.FirstOrDefault(c => c.Type == "given_name")?.Value ?? "",
+                    LastName = claims.FirstOrDefault(c => c.Type == "family_name")?.Value ?? "",
+                    Avatar = ""
+                };
+
+                await _userRepository.InsertAsync(user, cancellationToken);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
         }
     }
 }
