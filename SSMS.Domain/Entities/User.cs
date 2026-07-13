@@ -9,6 +9,7 @@ namespace SSMS.Domain.Entities
         public string Email { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-        public string Avatar { get; set; } = string.Empty;
+        public string? AvatarUrl { get; set; } = string.Empty;
+        public string? AvatarPublicId { get; set; } = string.Empty;
     }
 }

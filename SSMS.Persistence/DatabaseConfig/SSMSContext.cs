@@ -42,8 +42,25 @@ namespace SSMS.Infrustructure.DatabaseConfig
                 //e.Property(u => u.FullName)
                 //    .HasMaxLength(128);
 
-                e.Property(u => u.Avatar)
-                    .HasMaxLength(256);
+                e.Property(u => u.FirstName)
+                    .HasMaxLength(50)
+                    .IsRequired()
+                    .IsUnicode();
+
+                e.Property(u => u.LastName)
+                    .HasMaxLength(50)
+                    .IsRequired()
+                    .IsUnicode();
+
+                e.Property(u => u.AvatarUrl)
+                    .HasMaxLength(500)
+                    .IsRequired(false)
+                    .IsUnicode(false);
+
+                e.Property(u => u.AvatarPublicId)
+                    .HasMaxLength(200)
+                    .IsRequired(false)
+                    .IsUnicode(false);
 
                 //e.Property(u => u.Gender)
                 //    .HasConversion<byte>()

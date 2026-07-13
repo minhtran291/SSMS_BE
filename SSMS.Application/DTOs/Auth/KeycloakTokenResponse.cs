@@ -21,6 +21,10 @@ namespace SSMS.Application.DTOs.Auth
         [JsonPropertyName("roles")]
         public IEnumerable<string> Roles { get; set; } = [];
         [JsonPropertyName("full_name")]
-        public string FullName {  get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+        //[JsonPropertyName("first_name")]
+        //public string FirstName { get; set; } = string.Empty;
+        //[JsonPropertyName("last_name")]
+        //public string LastName { get; set; } = string.Empty;
     }
 }

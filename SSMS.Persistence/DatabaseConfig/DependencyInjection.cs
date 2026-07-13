@@ -12,12 +12,14 @@ using SSMS.Domain.Repositories.ProductImages;
 using SSMS.Domain.Repositories.Products;
 using SSMS.Domain.Repositories.ProductSizePrices;
 using SSMS.Domain.Repositories.Sizes;
+using SSMS.Domain.Repositories.Users;
 using SSMS.Infrustructure.Repositories.Brands;
 using SSMS.Infrustructure.Repositories.Categories;
 using SSMS.Infrustructure.Repositories.ProductImages;
 using SSMS.Infrustructure.Repositories.Products;
 using SSMS.Infrustructure.Repositories.ProductSizePrices;
 using SSMS.Infrustructure.Repositories.Sizes;
+using SSMS.Infrustructure.Repositories.Users;
 using SSMS.Infrustructure.Services.Authentication;
 using SSMS.Infrustructure.Services.Image;
 
@@ -74,6 +76,9 @@ namespace SSMS.Infrustructure.DatabaseConfig
             // initial values
             services.Configure<KeycloakSettings>(configuration.GetSection("Keycloak"));
 
+            // cloudinary
+            services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
+
             // repositories and unit of work
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -81,6 +86,7 @@ namespace SSMS.Infrustructure.DatabaseConfig
             services.AddScoped<ISizeRepository, SizeRepository>();
             services.AddScoped<IProductSizePriceRepository, ProductSizePriceRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
