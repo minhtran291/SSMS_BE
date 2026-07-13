@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SSMS.Infrustructure.DatabaseConfig;
 
@@ -11,9 +12,11 @@ using SSMS.Infrustructure.DatabaseConfig;
 namespace SSMS.Infrustructure.Migrations
 {
     [DbContext(typeof(SSMSContext))]
-    partial class SSMSContextModelSnapshot : ModelSnapshot
+    [Migration("20260712063629_Modify_User")]
+    partial class Modify_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

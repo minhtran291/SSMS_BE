@@ -38,7 +38,13 @@ namespace SSMS.Application.Features.Auth.Commands
 
             var claims = DecodeTokenAndGetClaims(tokenResponse.AccessToken);
 
-            tokenResponse.FullName = claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "";
+            //tokenResponse.FullName = claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "";
+
+            var firstName = claims.FirstOrDefault(c => c.Type == "given_name")?.Value ?? "";
+
+            var lastName = claims.FirstOrDefault(c => c.Type == "family_name")?.Value ?? "";
+
+            tokenResponse.FullName = $"{lastName} {firstName}";
 
             tokenResponse.Roles = ExtractRolesFromClaims(claims);
 
@@ -101,7 +107,8 @@ namespace SSMS.Application.Features.Auth.Commands
                     Email = claims.FirstOrDefault(c => c.Type == "email")?.Value ?? "",
                     FirstName = claims.FirstOrDefault(c => c.Type == "given_name")?.Value ?? "",
                     LastName = claims.FirstOrDefault(c => c.Type == "family_name")?.Value ?? "",
-                    Avatar = ""
+                    AvatarUrl = null,
+                    AvatarPublicId = null,
                 };
 
                 await _userRepository.InsertAsync(user, cancellationToken);
