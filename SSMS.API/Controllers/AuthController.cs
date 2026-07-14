@@ -15,5 +15,15 @@ namespace SSMS.API.Controllers
             var result = await Mediator.Send(command, cancellationToken);
             return Ok(result);
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+        {
+            var command = new LogoutCommand(); // them cancel lation token vao
+
+            await Mediator.Send(command, cancellationToken);
+
+            return Ok();
+        }
     }
 }

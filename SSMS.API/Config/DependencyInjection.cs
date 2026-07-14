@@ -20,24 +20,25 @@ namespace SSMS.API.Config
             //{
             //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             //})
-            .AddJsonOptions(options => {
-            //    //var jsonOptions = options.JsonSerializerOptions;
+            .AddJsonOptions(options =>
+            {
+                //    //var jsonOptions = options.JsonSerializerOptions;
 
-            //    //jsonOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+                //    //jsonOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
 
-            //    //jsonOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+                //    //jsonOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
             });
 
             services.AddCors(options =>
             {
-                options.AddPolicy(CorsPolicy, 
+                options.AddPolicy(CorsPolicy,
                     policy =>
                     {
                         policy
                             .WithOrigins(origins)
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
-                            //.AllowCredentials();
+                            .AllowAnyMethod()
+                            .AllowCredentials(); // cai nay chi co tac dung gi ma khi goi api can gui ca cookie di
                     });
             });
 
@@ -70,7 +71,33 @@ namespace SSMS.API.Config
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        NameClaimType = "preferred_username",
+                        //NameClaimType = "preferred_username",
+                    };
+
+                    // cau hinh in log validate token trong debug console
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            Console.WriteLine($"Authorization: {context.Request.Headers.Authorization}");
+                            return Task.CompletedTask;
+                        },
+
+                        OnAuthenticationFailed = context =>
+                        {
+                            Console.WriteLine("Authentication failed");
+                            Console.WriteLine(context.Exception.ToString());
+                            return Task.CompletedTask;
+                        },
+
+                        OnChallenge = context =>
+                        {
+                            Console.WriteLine("JWT Challenge");
+                            Console.WriteLine(context.Error);
+                            Console.WriteLine(context.ErrorDescription);
+
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 

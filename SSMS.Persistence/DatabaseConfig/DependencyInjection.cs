@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SSMS.Application.Services.Authentication;
 using SSMS.Application.Services.Image;
+using SSMS.Application.Services.User;
 using SSMS.Domain;
 using SSMS.Domain.ConfigOptions;
 using SSMS.Domain.Repositories.Brands;
@@ -22,6 +23,7 @@ using SSMS.Infrustructure.Repositories.Sizes;
 using SSMS.Infrustructure.Repositories.Users;
 using SSMS.Infrustructure.Services.Authentication;
 using SSMS.Infrustructure.Services.Image;
+using SSMS.Infrustructure.Services.User;
 
 namespace SSMS.Infrustructure.DatabaseConfig
 {
@@ -92,6 +94,8 @@ namespace SSMS.Infrustructure.DatabaseConfig
 
             // dang ky dich vụ xac thuc
             services.AddHttpClient<IAuthenticationService, KeycloakAuthenticationService>();
+            services.AddHttpClient<IKeycloakAdminClientService, KeycloakAdminClientService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             // services
             services.AddScoped<IImageService, ImageService>();

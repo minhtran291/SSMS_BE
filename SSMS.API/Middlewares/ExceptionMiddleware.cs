@@ -85,8 +85,6 @@ namespace SSMS.API.Middlewares
             {
                 BaseException baseException => baseException.StatusCode,
 
-                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
-
                 _ => StatusCodes.Status500InternalServerError
             };
         }

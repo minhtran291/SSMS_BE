@@ -18,7 +18,8 @@ namespace SSMS.API
                 .AddApplication()
                 .AddAPI(builder.Configuration);
 
-            
+            builder.Services.AddHttpContextAccessor(); // ho tro viec doc claim type
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
