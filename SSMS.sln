@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSMS.Domain", "SSMS.Domain\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SSMS.Infrustructure", "SSMS.Persistence\SSMS.Infrustructure.csproj", "{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{B6763669-C8EF-4412-B5FE-CD604068E4E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Contracts", "Shared.Contracts\Shared.Contracts.csproj", "{19766E76-83C0-47D1-9456-D567B3194227}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +39,17 @@ Global
 		{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5C4C9FC-BF4B-441E-B7B3-66026E5BDD6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19766E76-83C0-47D1-9456-D567B3194227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19766E76-83C0-47D1-9456-D567B3194227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19766E76-83C0-47D1-9456-D567B3194227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19766E76-83C0-47D1-9456-D567B3194227}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B6763669-C8EF-4412-B5FE-CD604068E4E4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{19766E76-83C0-47D1-9456-D567B3194227} = {B6763669-C8EF-4412-B5FE-CD604068E4E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68FF93FC-7F24-4B52-879C-17DCD1FB479D}
