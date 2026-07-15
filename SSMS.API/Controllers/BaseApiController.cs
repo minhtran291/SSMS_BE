@@ -9,7 +9,7 @@ namespace SSMS.API.Controllers
     [Authorize]
     public abstract partial class BaseApiController : ControllerBase
     {
-        private ISender _mediator;
+        private ISender? _mediator;
 
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
     }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SSMS.Application.DTOs.Auth;
+using SSMS.Application.Exceptions;
 using SSMS.Application.Services.Authentication;
 using SSMS.Domain;
 using SSMS.Domain.Entities;
@@ -12,8 +13,8 @@ namespace SSMS.Application.Features.Auth.Commands
 {
     public class ExchangeCodeForTokenCommand : IRequest<KeycloakTokenResponse>
     {
-        public required string AuthorizationCode { get; set; }
-        public required string RedirectUri { get; set; }
+        public string AuthorizationCode { get; set; } = string.Empty;
+        public string RedirectUri { get; set; } = string.Empty;
     }
 
     public class ExchangeCodeForTokenCommandHandler : IRequestHandler<ExchangeCodeForTokenCommand, KeycloakTokenResponse>
@@ -34,11 +35,12 @@ namespace SSMS.Application.Features.Auth.Commands
 
         public async Task<KeycloakTokenResponse> Handle(ExchangeCodeForTokenCommand request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(request.AuthorizationCode) || string.IsNullOrEmpty(request.RedirectUri))
+                throw new BadRequestException("Không tìm thấy authorization code hoặc redirect uri.");
+
             var tokenResponse = await _authenticationService.ExchangeCodeForTokenAsync(request.AuthorizationCode, request.RedirectUri, cancellationToken);
 
             var claims = DecodeTokenAndGetClaims(tokenResponse.AccessToken);
-
-            //tokenResponse.FullName = claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "";
 
             var firstName = claims.FirstOrDefault(c => c.Type == "given_name")?.Value ?? "";
 
