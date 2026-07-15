@@ -52,7 +52,7 @@ namespace SSMS.Infrustructure.Services.Authentication
             //var tokenResponse = JsonSerializer.Deserialize<KeycloakTokenResponse>(json);
 
             var tokenResponse = await response.Content.ReadFromJsonAsync<KeycloakTokenResponse>(cancellationToken);
-            return tokenResponse ?? throw new BadRequestException("Không nhập được phản hồi token hợp lệ.");
+            return tokenResponse ?? throw new BadRequestException("Lỗi khi đọc dữ liệu trả về từ json.");
         }
 
         public async Task<KeycloakTokenResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
@@ -77,7 +77,7 @@ namespace SSMS.Infrustructure.Services.Authentication
             }
 
             var tokenResponse = await response.Content.ReadFromJsonAsync<KeycloakTokenResponse>(cancellationToken);
-            return tokenResponse ?? throw new BadRequestException("Lôi khi làm mới token.");
+            return tokenResponse ?? throw new BadRequestException("Lỗi khi đọc dữ liệu trả về từ json.");
         }
     }
 }
