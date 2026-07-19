@@ -17,6 +17,7 @@ namespace SSMS.Domain.Repositories.Base
         void Delete(TEntity entity);
         void Delete(IEnumerable<TEntity> entities);
 
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default, bool includeDeleted = false);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, bool includeDeleted = false, CancellationToken cancellationToken = default);
+        Task<List<TResult>> ListAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, bool includeDeleted = false, CancellationToken cancellationToken = default);
     }
 }

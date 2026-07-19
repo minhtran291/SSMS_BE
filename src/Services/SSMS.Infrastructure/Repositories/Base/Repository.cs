@@ -111,9 +111,19 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             Entities.RemoveRange(hardDeleteList);
     }
 
-    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken, bool includeDeleted)
+    public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, bool includeDeleted, CancellationToken cancellationToken)
     {
         var query = AddDeletedFilter(Table, includeDeleted);
-        return await query.AnyAsync(expression, cancellationToken);
+
+        return query.AnyAsync(predicate, cancellationToken);
+    }
+
+    public Task<List<TResult>> ListAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, bool includeDeleted, CancellationToken cancellationToken)
+    {
+        IQueryable<TEntity> query = AddDeletedFilter(Table, includeDeleted);
+
+        query = query.AsNoTracking();
+
+        return queryBuilder(query).ToListAsync(cancellationToken);
     }
 }
