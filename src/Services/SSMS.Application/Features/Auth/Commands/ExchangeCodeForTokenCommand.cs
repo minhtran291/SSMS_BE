@@ -24,8 +24,8 @@ namespace SSMS.Application.Features.Auth.Commands
         private readonly IUnitOfWork _unitOfWork;
 
         public ExchangeCodeForTokenCommandHandler(
-            IAuthenticationService authenticationService, 
-            IUserRepository userRepository, 
+            IAuthenticationService authenticationService,
+            IUserRepository userRepository,
             IUnitOfWork unitOfWork)
         {
             _authenticationService = authenticationService;
@@ -71,17 +71,17 @@ namespace SSMS.Application.Features.Auth.Commands
 
             var resourceAccessClaim = claims.FirstOrDefault(c => c.Type == "resource_access");
 
-            if(resourceAccessClaim is not null)
+            if (resourceAccessClaim is not null)
             {
                 using var resourceAccessJson = JsonDocument.Parse(resourceAccessClaim.Value);
 
-                foreach(var property in resourceAccessJson.RootElement.EnumerateObject())
+                foreach (var property in resourceAccessJson.RootElement.EnumerateObject())
                 {
-                    if(property.Value.TryGetProperty("roles", out var clientRolesElement))
+                    if (property.Value.TryGetProperty("roles", out var clientRolesElement))
                     {
-                        foreach(var role in clientRolesElement.EnumerateArray())
+                        foreach (var role in clientRolesElement.EnumerateArray())
                         {
-                            if(role.GetString() is string roleName)
+                            if (role.GetString() is string roleName)
                                 allRoles.Add(roleName);
                         }
                     }
@@ -98,7 +98,7 @@ namespace SSMS.Application.Features.Auth.Commands
             if (string.IsNullOrEmpty(keycloakId))
                 throw new InvalidOperationException("Token không chứa 'sub' claim.");
 
-            var isExist = await _userRepository.AnyAsync(u => u.KeycloakId == keycloakId, cancellationToken);
+            var isExist = await _userRepository.AnyAsync(u => u.KeycloakId == keycloakId, cancellationToken: cancellationToken);
 
             if (!isExist)
             {

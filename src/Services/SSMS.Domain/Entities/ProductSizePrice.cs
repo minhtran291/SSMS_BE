@@ -6,6 +6,7 @@ namespace SSMS.Domain.Entities
     public class ProductSizePrice : AuditableEntity
     {
         private decimal _price;
+
         public int ProductId { get; set; }
         public int SizeId { get; set; }
         public decimal Price
