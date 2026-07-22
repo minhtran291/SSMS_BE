@@ -2,9 +2,8 @@
 using SSMS.Application.DTOs.Auth;
 using SSMS.Application.Exceptions;
 using SSMS.Application.Services.Authentication;
-using SSMS.Domain;
 using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Users;
+using SSMS.Application.Repositories.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;

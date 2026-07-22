@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace SSMS.Domain.Repositories.Base
+namespace SSMS.Application.Repositories.Base
 {
     public interface IRepository<TEntity> where TEntity : class
     {

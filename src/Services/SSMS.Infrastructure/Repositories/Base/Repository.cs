@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SSMS.Domain.ExtendedEntities;
-using SSMS.Domain.Repositories.Base;
+using SSMS.Application.Repositories.Base;
 using SSMS.Infrastructure.DatabaseConfig;
 using System.Linq.Expressions;
 

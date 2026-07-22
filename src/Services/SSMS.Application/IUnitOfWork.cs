@@ -1,4 +1,4 @@
-﻿namespace SSMS.Domain
+﻿namespace SSMS.Application
 {
     public interface IUnitOfWork : IAsyncDisposable
     {

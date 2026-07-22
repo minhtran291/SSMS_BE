@@ -1,27 +1,28 @@
 ﻿using MediatR;
 using SSMS.Application.DTOs.Product;
 using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Products;
+using SSMS.Application.Repositories.Products;
 
 namespace SSMS.Application.Features.Products.Queries
 {
-    public record GetAllProductQuery : IRequest<List<ProductListDTO>>
-    {
-    }
+    public record GetAllProductQuery(ProductSearchDTO Dto) : IRequest<List<ProductListDTO>>;
 
-    public class GetAllProductQueryHandler : IRequestHandler<GetAllProductQuery, List<ProductListDTO>>
+    public class GetAllProductQueryHandler(IProductRepository productRepository) : IRequestHandler<GetAllProductQuery, List<ProductListDTO>>
     {
-        private readonly IProductRepository _productRepository;
-        public GetAllProductQueryHandler(IProductRepository productRepository)
-        {
-            _productRepository = productRepository;
-        }
+        private readonly IProductRepository _productRepository = productRepository;
 
         public Task<List<ProductListDTO>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
             //Func<IQueryable<Product>, IQueryable<ProductListDTO>> productQuery =
             //    query =>
             //    {
+            //        if (!string.IsNullOrEmpty(request.Dto.Keyword))
+            //        {
+            //            co phan biet hoa thuong ko
+            //            string trimmedKeyword = request.Dto.Keyword.ToLower().Trim();
+            //            query = query.Where(p => p.ProductName.ToLower().Contains(trimmedKeyword));
+            //        }
+
             //        var ordered = query.OrderBy(p => p.CreatedOnUtc);
 
             //        var projected = ordered
@@ -87,7 +88,7 @@ namespace SSMS.Application.Features.Products.Queries
             }
 
             return _productRepository
-                .ListAsync(productQuery, false, cancellationToken);
+                .ListAsync(productQuery, request.Dto.IsActive, cancellationToken);
         }
     }
 }

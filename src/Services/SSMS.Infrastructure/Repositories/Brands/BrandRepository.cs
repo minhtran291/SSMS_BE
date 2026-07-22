@@ -1,5 +1,5 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Brands;
+using SSMS.Application.Repositories.Brands;
 using SSMS.Infrastructure.DatabaseConfig;
 using SSMS.Infrastructure.Repositories.Base;
 

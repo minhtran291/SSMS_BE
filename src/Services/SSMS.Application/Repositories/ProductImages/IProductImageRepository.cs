@@ -1,7 +1,7 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Base;
+using SSMS.Application.Repositories.Base;
 
-namespace SSMS.Domain.Repositories.ProductImages
+namespace SSMS.Application.Repositories.ProductImages
 {
     public interface IProductImageRepository : IRepository<ProductImage>
     {

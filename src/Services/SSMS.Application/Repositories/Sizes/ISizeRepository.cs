@@ -1,7 +1,7 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Base;
+using SSMS.Application.Repositories.Base;
 
-namespace SSMS.Domain.Repositories.Sizes
+namespace SSMS.Application.Repositories.Sizes
 {
     public interface ISizeRepository : IRepository<Size>
     {
