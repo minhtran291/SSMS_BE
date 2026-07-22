@@ -1,7 +1,7 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Base;
+using SSMS.Application.Repositories.Base;
 
-namespace SSMS.Domain.Repositories.Users
+namespace SSMS.Application.Repositories.Users
 {
     public interface IUserRepository : IRepository<User>
     {

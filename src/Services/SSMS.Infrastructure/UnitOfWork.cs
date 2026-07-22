@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using SSMS.Domain;
+using SSMS.Application;
 using SSMS.Infrastructure.DatabaseConfig;
 
 namespace SSMS.Infrastructure

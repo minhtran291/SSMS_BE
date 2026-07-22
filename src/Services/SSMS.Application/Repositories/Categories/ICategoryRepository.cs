@@ -1,7 +1,7 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Base;
+using SSMS.Application.Repositories.Base;
 
-namespace SSMS.Domain.Repositories.Categories
+namespace SSMS.Application.Repositories.Categories
 {
     public interface ICategoryRepository : IRepository<Category>
     {

@@ -1,5 +1,5 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.ProductSizePrices;
+using SSMS.Application.Repositories.ProductSizePrices;
 using SSMS.Infrastructure.DatabaseConfig;
 using SSMS.Infrastructure.Repositories.Base;
 

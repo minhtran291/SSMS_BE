@@ -1,5 +1,5 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.ProductImages;
+using SSMS.Application.Repositories.ProductImages;
 using SSMS.Infrastructure.DatabaseConfig;
 using SSMS.Infrastructure.Repositories.Base;
 

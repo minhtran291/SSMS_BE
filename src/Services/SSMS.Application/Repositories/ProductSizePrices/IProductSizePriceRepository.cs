@@ -1,7 +1,7 @@
 ﻿using SSMS.Domain.Entities;
-using SSMS.Domain.Repositories.Base;
+using SSMS.Application.Repositories.Base;
 
-namespace SSMS.Domain.Repositories.ProductSizePrices
+namespace SSMS.Application.Repositories.ProductSizePrices
 {
     public interface IProductSizePriceRepository : IRepository<ProductSizePrice>
     {

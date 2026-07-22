@@ -1,21 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SSMS.Application.DTOs.Product;
-using SSMS.Application.Services.Product;
+using SSMS.Application.Features.Products.Queries;
 
 namespace SSMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController(IProductService productService) : ControllerBase
+    public class ProductController : BaseApiController
     {
-        //private readonly IProductService _productService = productService;
-
-        //[HttpGet]
-        //public async Task<ActionResult<IReadOnlyList<ProductListDTO>>> GetAllProducts(CancellationToken cancellationToken)
-        //{
-        //    var products = await _productService.GetAllProducts(cancellationToken);
-        //    return Ok(products);
-        //}
+        [HttpPost("search")]
+        public async Task<IActionResult> GetAllProducts([FromBody] ProductSearchDTO dto, CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetAllProductQuery(dto), cancellationToken);
+            return Ok(result);
+        }
 
         //[HttpGet("{id:int}")]
         //public async Task<ActionResult<ProductDetailDTO>> GetProductById(int id, CancellationToken cancellationToken)
