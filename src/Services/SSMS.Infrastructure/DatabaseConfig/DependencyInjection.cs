@@ -99,7 +99,7 @@ namespace SSMS.Infrastructure.DatabaseConfig
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             // services
-            services.AddScoped<IImageService, ImageService>();
+            //services.AddScoped<IImageService, ImageService>();
 
             return services;
         }

@@ -13,11 +13,11 @@ namespace SSMS.Application.Services.Product
     public class ProductService(
         IUnitOfWork unitOfWork,
         IMapper mapper,
-        IImageService imageService,
+        //IImageService imageService,
         IValidator<CreateProductDTO> validator) : Service(unitOfWork, mapper), IProductService
     {
         private readonly IValidator<CreateProductDTO> _validator = validator;
-        private readonly IImageService _imageService = imageService;
+        //private readonly IImageService _imageService = imageService;
         //public async Task<IReadOnlyList<ProductListDTO>> GetAllProducts(CancellationToken cancellationToken = default)
         //{
         //    return await _unitOfWork.Product

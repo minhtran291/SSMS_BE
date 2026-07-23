@@ -4,7 +4,7 @@ using SSMS.Application.Services.Image;
 
 namespace SSMS.Infrastructure.Services.Image
 {
-    public class ImageService : IImageService
+    public class ImageService
     {
         //private readonly IWebHostEnvironment _webHostEnvironment;
 

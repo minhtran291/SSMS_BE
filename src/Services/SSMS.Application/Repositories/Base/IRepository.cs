@@ -1,10 +1,14 @@
-﻿using System.Linq.Expressions;
+﻿using SSMS.Application.Common;
+using SSMS.Application.DTOs;
+using SSMS.Application.Common.Enums;
+using System.Linq.Expressions;
 
 namespace SSMS.Application.Repositories.Base
 {
     public interface IRepository<TEntity> where TEntity : class
     {
         IQueryable<TEntity> Table { get; }
+        IQueryable<TEntity> Query(QueryTracking tracking = QueryTracking.Tracking);
 
         Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
         void Insert(TEntity entity);
@@ -19,5 +23,6 @@ namespace SSMS.Application.Repositories.Base
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, bool includeDeleted = false, CancellationToken cancellationToken = default);
         Task<List<TResult>> ListAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, bool includeDeleted = false, CancellationToken cancellationToken = default);
+        Task<PagedResult<TResult>> PageAsync<TResult>(IQueryable<TResult> query, BaseSearchDTO search, CancellationToken cancellationToken = default);
     }
 }

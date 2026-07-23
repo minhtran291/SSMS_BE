@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using SSMS.Domain.ExtendedEntities;
+using SSMS.Application.Common;
+using SSMS.Application.DTOs;
 using SSMS.Application.Repositories.Base;
+using SSMS.Application.Common.Enums;
+using SSMS.Domain.ExtendedEntities;
 using SSMS.Infrastructure.DatabaseConfig;
 using System.Linq.Expressions;
 
@@ -19,6 +22,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     protected virtual DbSet<TEntity> Entities => _entities ??= _context.Set<TEntity>();
 
     public IQueryable<TEntity> Table => Entities;
+    public IQueryable<TEntity> Query(QueryTracking tracking)
+    {
+        return tracking == QueryTracking.NoTracking
+            ? Entities.AsNoTracking()
+            : Entities;
+    }
 
     protected virtual IQueryable<TEntity> AddDeletedFilter(IQueryable<TEntity> query, bool includeDeleted)
     {
@@ -125,5 +134,26 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         query = query.AsNoTracking();
 
         return queryBuilder(query).ToListAsync(cancellationToken);
+    }
+
+    public async Task<PagedResult<TResult>> PageAsync<TResult>(
+        IQueryable<TResult> query, 
+        BaseSearchDTO search, 
+        CancellationToken cancellationToken)
+    {
+        int totalRecords = await query.CountAsync(cancellationToken);
+
+        List<TResult> items = await query
+            .Skip((search.Page - 1) * search.PageSize)
+            .Take(search.PageSize)
+            .ToListAsync(cancellationToken);
+
+        return new PagedResult<TResult>
+        {
+            Items = items,
+            CurrentPage = search.Page,
+            PageSize = search.PageSize,
+            TotalRecord = totalRecords,
+        };
     }
 }
