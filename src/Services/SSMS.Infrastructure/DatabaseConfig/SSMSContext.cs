@@ -175,14 +175,23 @@ namespace SSMS.Infrastructure.DatabaseConfig
 
             builder.Entity<ProductImage>(e =>
             {
-                e.HasKey(e => new { e.ProductId, e.Image });
+                e.HasKey(e => e.Id);
 
-                e.Property(e => e.Image)
-                    .HasMaxLength(512)
+                e.Property(e => e.ImageUrl)
+                    .HasMaxLength(1024)
+                    .IsUnicode(false)
+                    .IsRequired();
+
+                e.Property(e => e.StorageKey)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
                     .IsRequired();
 
                 e.Property(e => e.DisplayOrder)
                     .IsRequired();
+
+                e.HasIndex(e => e.StorageKey)
+                    .IsUnique();
 
                 e.HasIndex(e => new { e.ProductId, e.DisplayOrder })
                     .IsUnique();

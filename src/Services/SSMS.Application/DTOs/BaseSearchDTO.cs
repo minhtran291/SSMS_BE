@@ -4,6 +4,7 @@
     {
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
-        public int PageIndex => Page > 0 ? Page - 1 : 0;
+        //public int PageIndex => Math.Max(Page - 1, 0);
+        //public int PageIndex => Page > 0 ? Page - 1 : 0;
     }
 }
