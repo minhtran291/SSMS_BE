@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using SSMS.Application.DTOs.Product;
-using SSMS.Application.Exceptions;
 using SSMS.Application.Services.Base;
-using SSMS.Application.Services.Image;
-using SSMS.Domain;
-using SSMS.Domain.Entities;
 
 namespace SSMS.Application.Services.Product
 {

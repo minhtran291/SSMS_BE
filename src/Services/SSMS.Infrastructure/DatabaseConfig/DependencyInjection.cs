@@ -3,11 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SSMS.Application;
-using SSMS.Application.Services.Authentication;
-using SSMS.Application.Services.Image;
-using SSMS.Application.Services.User;
-using SSMS.Domain;
-using SSMS.Domain.ConfigOptions;
 using SSMS.Application.Repositories.Brands;
 using SSMS.Application.Repositories.Categories;
 using SSMS.Application.Repositories.ProductImages;
@@ -15,6 +10,11 @@ using SSMS.Application.Repositories.Products;
 using SSMS.Application.Repositories.ProductSizePrices;
 using SSMS.Application.Repositories.Sizes;
 using SSMS.Application.Repositories.Users;
+using SSMS.Application.Services.Authentication;
+using SSMS.Application.Services.Storage;
+using SSMS.Application.Services.User;
+using SSMS.Domain.ConfigOptions;
+using SSMS.Infrastructure.Configurations;
 using SSMS.Infrastructure.Repositories.Brands;
 using SSMS.Infrastructure.Repositories.Categories;
 using SSMS.Infrastructure.Repositories.ProductImages;
@@ -23,7 +23,7 @@ using SSMS.Infrastructure.Repositories.ProductSizePrices;
 using SSMS.Infrastructure.Repositories.Sizes;
 using SSMS.Infrastructure.Repositories.Users;
 using SSMS.Infrastructure.Services.Authentication;
-using SSMS.Infrastructure.Services.Image;
+using SSMS.Infrastructure.Services.Storage;
 using SSMS.Infrastructure.Services.User;
 
 namespace SSMS.Infrastructure.DatabaseConfig
@@ -99,7 +99,7 @@ namespace SSMS.Infrastructure.DatabaseConfig
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             // services
-            //services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IFileStorageService, CloudinaryFileStorageService>();
 
             return services;
         }
