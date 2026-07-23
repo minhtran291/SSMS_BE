@@ -1,15 +1,15 @@
 ﻿using SSMS.Application.Common.Models;
 
-namespace SSMS.Application.Services.Image
+namespace SSMS.Application.Services.Storage
 {
-    public interface IImageService
+    public interface IFileStorageService
     {
-        Task<ImageUploadResult> UploadAsync(
+        Task<UploadedImage> UploadAsync(
             UploadFile file, 
             CancellationToken cancellationToken = default);
 
         Task DeleteAsync(
-            string publicId, 
+            string storageKey, 
             CancellationToken cancellationToken = default);
     }
 }
